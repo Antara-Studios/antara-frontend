@@ -51,9 +51,10 @@ export default function Navbar() {
         animate={{ y: hidden && !menuOpen ? '-150%' : '0%' }}
         transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
         className={`
-          fixed top-6 left-1/2 -translate-x-1/2 z-50 w-max
+          fixed top-4 md:top-6 left-1/2 -translate-x-1/2 z-50
+          w-[calc(100vw-2rem)] md:w-max max-w-[calc(100vw-2rem)]
           backdrop-blur-xl bg-cream/80 ring-1 ring-espresso/10 rounded-full px-6 py-3
-          flex items-center gap-8
+          flex items-center justify-between md:justify-start gap-4 md:gap-8
           ${scrolled ? 'shadow-lg shadow-espresso/10 bg-cream/90 backdrop-blur-2xl' : ''}
         `}
       >

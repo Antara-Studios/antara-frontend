@@ -11,7 +11,7 @@ import CTABanner from '../sections/CTABanner'
 
 export default function Home() {
   return (
-    <main className="pt-24">
+    <main className="pt-20 md:pt-24">
       <Hero />
       <DemoStrip />
       <Templates />

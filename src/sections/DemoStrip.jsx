@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import SectionLabel from '../components/ui/SectionLabel'
 
@@ -52,11 +52,9 @@ const cards = [
 
 function InvitationCard({ card }) {
   return (
-    <motion.div
-      className={`relative w-72 flex-shrink-0 snap-start ${card.bg} rounded-[2rem] overflow-hidden group`}
+    <div
+      className={`relative w-64 sm:w-72 flex-shrink-0 snap-start ${card.bg} rounded-[2rem] overflow-hidden`}
       style={{ aspectRatio: '9/16' }}
-      whileHover="hover"
-      initial="rest"
     >
       {/* Outer bezel sim */}
       <div className="absolute inset-1.5 border border-white/10 rounded-[calc(2rem-6px)] pointer-events-none z-10" />
@@ -79,21 +77,12 @@ function InvitationCard({ card }) {
         </div>
       </div>
 
-      {/* Hover Overlay */}
-      <AnimatePresence>
-        <motion.div
-          variants={{
-            rest: { opacity: 0, y: 20 },
-            hover: { opacity: 1, y: 0 },
-          }}
-          transition={{ duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
-          className="absolute inset-0 bg-espresso/70 backdrop-blur-sm flex items-end justify-center pb-8 z-20"
-        >
-          <button className="px-6 py-2.5 bg-cream text-espresso text-xs font-semibold rounded-full hover:bg-gold transition-colors duration-300">
-            View Full Preview →
-          </button>
-        </motion.div>
-      </AnimatePresence>
+      {/* Always-visible preview button at bottom — tap-friendly on mobile */}
+      <div className="absolute bottom-0 inset-x-0 z-20 pb-6 flex justify-center">
+        <button className="px-5 py-2.5 bg-cream/90 text-espresso text-xs font-semibold rounded-full backdrop-blur-sm active:bg-gold hover:bg-gold transition-colors duration-300">
+          View Full Preview →
+        </button>
+      </div>
 
       {/* Template name badge */}
       <div className="absolute top-4 left-4 z-30">
@@ -101,7 +90,7 @@ function InvitationCard({ card }) {
           {card.name}
         </span>
       </div>
-    </motion.div>
+    </div>
   )
 }
 
@@ -114,13 +103,14 @@ export default function DemoStrip() {
         <SectionLabel badge="Live Previews" heading="Experience Before You Decide" align="center" />
       </div>
 
-      {/* Drag scroll container */}
-      <div ref={constraintsRef} className="overflow-hidden">
+      {/* Scroll container: touch-pan-y allows vertical page scroll on mobile,
+          hide-scrollbar hides the scrollbar, scroll-touch enables iOS momentum */}
+      <div ref={constraintsRef} className="overflow-hidden touch-pan-y">
         <motion.div
           drag="x"
           dragConstraints={constraintsRef}
-          className="flex gap-6 px-4 sm:px-8 lg:px-16 pb-4 cursor-grab active:cursor-grabbing overflow-x-auto snap-x snap-mandatory hide-scrollbar"
-          style={{ paddingLeft: 'max(1rem, calc((100vw - 80rem) / 2 + 1rem))' }}
+          className="flex gap-4 sm:gap-6 pb-4 cursor-grab active:cursor-grabbing overflow-x-auto snap-x snap-mandatory hide-scrollbar scroll-touch"
+          style={{ paddingLeft: 'max(1rem, calc((100vw - 80rem) / 2 + 1rem))', paddingRight: '1rem' }}
         >
           {cards.map((card) => (
             <InvitationCard key={card.id} card={card} />

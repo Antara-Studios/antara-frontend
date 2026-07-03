@@ -17,11 +17,11 @@ export default function CTABanner() {
     >
       {/* Floating decorative rings */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-        <div className="absolute top-8 left-[10%] w-40 h-40 border border-gold/20 rounded-full animate-float" style={{ willChange: 'transform' }} />
-        <div className="absolute top-12 left-[12%] w-24 h-24 border border-gold/15 rounded-full animate-float" style={{ willChange: 'transform', animationDelay: '0.5s' }} />
-        <div className="absolute bottom-8 right-[8%] w-56 h-56 border border-gold/15 rounded-full animate-float-slow" style={{ willChange: 'transform' }} />
-        <div className="absolute bottom-12 right-[12%] w-32 h-32 border border-gold/20 rounded-full animate-float-slow" style={{ willChange: 'transform', animationDelay: '1s' }} />
-        <div className="absolute top-1/2 left-[5%] -translate-y-1/2 w-20 h-20 border border-gold/10 rounded-full animate-float-delay" style={{ willChange: 'transform' }} />
+        <div className="hidden sm:block absolute top-8 left-[10%] w-40 h-40 border border-gold/20 rounded-full animate-float" style={{ willChange: 'transform' }} />
+        <div className="hidden sm:block absolute top-12 left-[12%] w-24 h-24 border border-gold/15 rounded-full animate-float" style={{ willChange: 'transform', animationDelay: '0.5s' }} />
+        <div className="hidden sm:block absolute bottom-8 right-[8%] w-56 h-56 border border-gold/15 rounded-full animate-float-slow" style={{ willChange: 'transform' }} />
+        <div className="hidden sm:block absolute bottom-12 right-[12%] w-32 h-32 border border-gold/20 rounded-full animate-float-slow" style={{ willChange: 'transform', animationDelay: '1s' }} />
+        <div className="hidden sm:block absolute top-1/2 left-[5%] -translate-y-1/2 w-20 h-20 border border-gold/10 rounded-full animate-float-delay" style={{ willChange: 'transform' }} />
         <div className="absolute top-1/3 right-[20%] w-8 h-8 bg-gold/15 rounded-full animate-pulse-soft" />
         <div className="absolute bottom-1/3 left-[30%] w-4 h-4 bg-gold/20 rounded-full animate-pulse-soft" style={{ animationDelay: '1.5s' }} />
       </div>
@@ -45,12 +45,12 @@ export default function CTABanner() {
           Join 10,000+ couples who chose Antara Studios to share their love story with the world — beautifully and digitally.
         </motion.p>
 
-        <motion.div variants={fadeUpVariant} className="flex flex-wrap items-center justify-center gap-4">
-          <Link to="/create">
-            <Button size="lg" variant="primary">Create Free Invitation</Button>
+        <motion.div variants={fadeUpVariant} className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full sm:w-auto">
+          <Link to="/create" className="w-full sm:w-auto">
+            <Button size="lg" variant="primary" className="w-full sm:w-auto">Create Free Invitation</Button>
           </Link>
-          <Link to="/templates">
-            <Button size="lg" variant="outline">View Templates</Button>
+          <Link to="/templates" className="w-full sm:w-auto">
+            <Button size="lg" variant="outline" className="w-full sm:w-auto">View Templates</Button>
           </Link>
         </motion.div>
       </motion.div>

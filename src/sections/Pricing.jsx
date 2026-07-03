@@ -69,7 +69,7 @@ function PricingCard({ plan, isAnnual }) {
       className={`
         relative flex flex-col gap-6 rounded-[2rem] p-6 ring-1
         ${plan.recommended
-          ? 'bg-espresso text-cream ring-gold ring-2 md:scale-105 md:z-10'
+          ? 'bg-espresso text-cream ring-gold ring-2 md:scale-105 md:z-10 order-first md:order-none'
           : 'bg-cream ring-espresso/10'}
       `}
     >
@@ -94,7 +94,7 @@ function PricingCard({ plan, isAnnual }) {
           key={price}
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`font-display text-5xl font-bold ${plan.recommended ? 'text-cream' : 'text-espresso'}`}
+          className={`font-display text-4xl sm:text-5xl font-bold ${plan.recommended ? 'text-cream' : 'text-espresso'}`}
         >
           {price.toLocaleString()}
         </motion.span>

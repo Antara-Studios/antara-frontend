@@ -36,7 +36,7 @@ export default function AIPersonalization() {
   return (
     <section className="py-32 bg-warm-50" aria-label="AI Personalization">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           {/* Left Block */}
           <motion.div
             ref={leftRef}
@@ -90,7 +90,7 @@ export default function AIPersonalization() {
 
             {/* Double-bezel card */}
             <div className="relative bg-warm-100/60 ring-1 ring-espresso/8 p-1.5 rounded-[2rem] w-full max-w-sm">
-              <div className="bg-cream shadow-[inset_0_1px_1px_rgba(255,255,255,0.6)] rounded-[calc(2rem-6px)] p-8 relative min-h-[400px]">
+              <div className="bg-cream shadow-[inset_0_1px_1px_rgba(255,255,255,0.6)] rounded-[calc(2rem-6px)] p-5 sm:p-8 relative min-h-[320px] sm:min-h-[400px]">
                 {/* AI badge */}
                 <div className="absolute top-4 right-4">
                   <Badge variant="gold">AI Generated</Badge>
@@ -98,7 +98,7 @@ export default function AIPersonalization() {
 
                 {/* Typewriter text */}
                 <div className="mt-8">
-                  <pre className="font-display text-sm text-espresso leading-relaxed whitespace-pre-wrap font-normal">
+                  <pre className="font-display text-sm text-espresso leading-relaxed whitespace-pre-wrap break-words font-normal">
                     {displayText}
                     <span className="inline-block w-0.5 h-4 bg-gold animate-pulse-soft ml-0.5 align-middle" />
                   </pre>

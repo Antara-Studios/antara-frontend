@@ -69,7 +69,7 @@ function TemplateCard({ template }) {
   return (
     <motion.div
       className={`relative overflow-hidden rounded-2xl ${template.bg} group ${template.span}`}
-      style={{ minHeight: template.featured ? '400px' : '200px' }}
+      style={{ minHeight: template.featured ? 'clamp(260px, 35vw, 400px)' : 'clamp(160px, 20vw, 200px)' }}
       whileHover="hover"
       initial="rest"
     >
@@ -129,14 +129,14 @@ export default function Templates() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionLabel badge="Curated Designs" heading="50+ Premium Templates" align="center" />
 
-        {/* Filter Tabs */}
-        <div className="flex items-center justify-center gap-1 mb-12 flex-wrap">
+        {/* Filter Tabs — scrollable row on mobile, centered wrap on desktop */}
+        <div className="flex items-center gap-1 mb-8 md:mb-12 overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0 sm:justify-center sm:flex-wrap hide-scrollbar scroll-touch pb-1 flex-nowrap sm:flex-wrap">
           {filters.map((filter) => (
             <button
               key={filter}
               onClick={() => setActiveFilter(filter)}
               className={`
-                relative px-4 py-2 text-sm font-medium rounded-full transition-colors duration-300
+                relative flex-shrink-0 px-4 py-2 text-sm font-medium rounded-full transition-colors duration-300
                 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold
                 ${activeFilter === filter ? 'text-espresso' : 'text-espresso/50 hover:text-espresso/80'}
               `}

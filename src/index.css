@@ -60,3 +60,22 @@ body {
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+/* iOS momentum scrolling */
+.scroll-touch {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* iOS safe area insets */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.pt-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+/* Allow vertical page scroll while container is horizontally scrollable/draggable */
+.touch-pan-y {
+  touch-action: pan-y;
+}

@@ -89,22 +89,14 @@ export default function Testimonials() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionLabel badge="Love Stories" heading="What Couples Are Saying" align="center" />
 
+        {/* On mobile: content on top, arrows + dots below. On sm+: side-by-side with arrows */}
         <div
-          className="relative flex items-center gap-6 max-w-3xl mx-auto"
+          className="max-w-3xl mx-auto"
           onMouseEnter={stopAutoplay}
           onMouseLeave={startAutoplay}
         >
-          {/* Prev arrow */}
-          <button
-            onClick={prev}
-            aria-label="Previous testimonial"
-            className="flex-shrink-0 w-10 h-10 rounded-full bg-cream ring-1 ring-espresso/10 flex items-center justify-center text-espresso/50 hover:text-espresso hover:ring-espresso/20 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
-          >
-            <ChevronLeft className="w-4 h-4" />
-          </button>
-
           {/* Testimonial Slide */}
-          <div className="flex-1 min-h-[320px] flex items-center">
+          <div className="min-h-[280px] sm:min-h-[320px] flex items-center">
             <AnimatePresence mode="wait">
               <motion.div
                 key={current}
@@ -120,7 +112,7 @@ export default function Testimonials() {
                 </span>
 
                 {/* Quote */}
-                <blockquote className="font-display italic text-xl md:text-2xl text-espresso leading-relaxed -mt-8">
+                <blockquote className="font-display italic text-lg sm:text-xl md:text-2xl text-espresso leading-relaxed -mt-8">
                   {t.quote}
                 </blockquote>
 
@@ -150,29 +142,39 @@ export default function Testimonials() {
             </AnimatePresence>
           </div>
 
-          {/* Next arrow */}
-          <button
-            onClick={next}
-            aria-label="Next testimonial"
-            className="flex-shrink-0 w-10 h-10 rounded-full bg-cream ring-1 ring-espresso/10 flex items-center justify-center text-espresso/50 hover:text-espresso hover:ring-espresso/20 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
-          >
-            <ChevronRight className="w-4 h-4" />
-          </button>
-        </div>
-
-        {/* Dot indicators */}
-        <div className="flex items-center justify-center gap-2 mt-8">
-          {testimonials.map((_, i) => (
+          {/* Arrows + Dots row below quote — full width on all screens */}
+          <div className="flex items-center justify-center gap-4 mt-8">
             <button
-              key={i}
-              onClick={() => { stopAutoplay(); setCurrent(i); startAutoplay() }}
-              aria-label={`Go to testimonial ${i + 1}`}
-              className={`
-                rounded-full transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold
-                ${i === current ? 'w-6 h-2 bg-gold' : 'w-2 h-2 bg-espresso/20 hover:bg-espresso/40'}
-              `}
-            />
-          ))}
+              onClick={prev}
+              aria-label="Previous testimonial"
+              className="w-10 h-10 rounded-full bg-cream ring-1 ring-espresso/10 flex items-center justify-center text-espresso/50 hover:text-espresso hover:ring-espresso/20 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold flex-shrink-0"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+
+            {/* Dot indicators */}
+            <div className="flex items-center gap-2">
+              {testimonials.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => { stopAutoplay(); setCurrent(i); startAutoplay() }}
+                  aria-label={`Go to testimonial ${i + 1}`}
+                  className={`
+                    rounded-full transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold
+                    ${i === current ? 'w-6 h-2 bg-gold' : 'w-2 h-2 bg-espresso/20 hover:bg-espresso/40'}
+                  `}
+                />
+              ))}
+            </div>
+
+            <button
+              onClick={next}
+              aria-label="Next testimonial"
+              className="w-10 h-10 rounded-full bg-cream ring-1 ring-espresso/10 flex items-center justify-center text-espresso/50 hover:text-espresso hover:ring-espresso/20 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold flex-shrink-0"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
         </div>
       </div>
     </section>

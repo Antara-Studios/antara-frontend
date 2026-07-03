@@ -104,7 +104,7 @@ export default function CreatePage() {
         {/* Step indicator */}
         <div className="flex-1 flex flex-col items-center gap-1">
           <p className="text-xs text-espresso/50 font-medium">Step {step} of {TOTAL_STEPS}</p>
-          <div className="w-full max-w-xs bg-espresso/10 rounded-full h-1 overflow-hidden">
+          <div className="w-full max-w-[120px] sm:max-w-xs bg-espresso/10 rounded-full h-1 overflow-hidden">
             <motion.div
               animate={{ width: `${(step / TOTAL_STEPS) * 100}%` }}
               transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
@@ -242,7 +242,7 @@ export default function CreatePage() {
                 onDragLeave={() => setIsDragging(false)}
                 onDrop={(e) => { e.preventDefault(); setIsDragging(false) }}
                 className={`
-                  border-2 border-dashed rounded-3xl p-12 text-center mb-6 transition-all duration-300
+                  border-2 border-dashed rounded-3xl p-6 sm:p-12 text-center mb-6 transition-all duration-300
                   ${isDragging ? 'border-gold bg-gold/5' : 'border-espresso/20 hover:border-espresso/40'}
                 `}
               >
@@ -255,7 +255,7 @@ export default function CreatePage() {
               </div>
 
               {/* Photo slots */}
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-3 gap-2 sm:gap-4">
                 {['Couple Photo', 'Family Photo 1', 'Family Photo 2'].map((label) => (
                   <div
                     key={label}
@@ -445,7 +445,7 @@ export default function CreatePage() {
       </div>
 
       {/* Bottom navigation */}
-      <div className="sticky bottom-0 bg-cream/90 backdrop-blur-xl border-t border-espresso/8 px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between gap-4">
+      <div className="sticky bottom-0 bg-cream/90 backdrop-blur-xl border-t border-espresso/8 px-4 sm:px-6 lg:px-8 pt-4 pb-4 pb-safe flex items-center justify-between gap-4" style={{ paddingBottom: 'max(1rem, env(safe-area-inset-bottom))' }}>
         <button
           onClick={() => setStep((s) => Math.max(1, s - 1))}
           disabled={step === 1}

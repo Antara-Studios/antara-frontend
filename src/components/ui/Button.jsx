@@ -31,7 +31,7 @@ export default function Button({
       disabled={disabled}
       whileTap={{ scale: 0.97 }}
       className={`
-        group relative inline-flex items-center justify-between rounded-full font-medium
+        group relative inline-flex items-center ${size === 'sm' ? 'justify-center' : 'justify-between'} rounded-full font-medium
         transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]
         disabled:opacity-50 disabled:cursor-not-allowed
         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2

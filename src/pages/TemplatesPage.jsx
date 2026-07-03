@@ -46,7 +46,7 @@ export default function TemplatesPage() {
     .slice(0, displayCount)
 
   return (
-    <main className="pt-24 min-h-screen">
+    <main className="pt-20 md:pt-24 min-h-screen">
       {/* Hero bar */}
       <div className="bg-espresso py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto text-center flex flex-col items-center gap-4">

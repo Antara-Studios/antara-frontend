@@ -20,12 +20,12 @@ export default function Hero() {
       {/* Grain overlay */}
       <div className="grain-overlay" aria-hidden="true" />
 
-      {/* Floating decorative rings */}
+      {/* Floating decorative rings — hidden on mobile to prevent bleed */}
       <div aria-hidden="true" className="pointer-events-none">
-        <div className="absolute top-1/4 left-[8%] w-32 h-32 border border-gold/30 rounded-full animate-float" style={{ willChange: 'transform' }} />
-        <div className="absolute top-[55%] left-[4%] w-20 h-20 border border-gold/20 rounded-full animate-float-slow" style={{ willChange: 'transform' }} />
-        <div className="absolute top-[20%] right-[6%] w-48 h-48 border border-gold/15 rounded-full animate-float-delay" style={{ willChange: 'transform' }} />
-        {/* Gold dots */}
+        <div className="hidden sm:block absolute top-1/4 left-[8%] w-32 h-32 border border-gold/30 rounded-full animate-float" style={{ willChange: 'transform' }} />
+        <div className="hidden sm:block absolute top-[55%] left-[4%] w-20 h-20 border border-gold/20 rounded-full animate-float-slow" style={{ willChange: 'transform' }} />
+        <div className="hidden sm:block absolute top-[20%] right-[6%] w-48 h-48 border border-gold/15 rounded-full animate-float-delay" style={{ willChange: 'transform' }} />
+        {/* Gold dots — visible on all screens */}
         <div className="absolute top-[30%] left-[20%] w-2 h-2 bg-gold/20 rounded-full animate-pulse-soft" />
         <div className="absolute top-[65%] left-[15%] w-2 h-2 bg-gold/30 rounded-full animate-pulse-soft" style={{ animationDelay: '1s' }} />
         <div className="absolute top-[40%] right-[18%] w-2 h-2 bg-gold/25 rounded-full animate-pulse-soft" style={{ animationDelay: '2s' }} />
@@ -33,7 +33,7 @@ export default function Hero() {
         <div className="absolute top-[15%] right-[35%] w-2 h-2 bg-gold/30 rounded-full animate-pulse-soft" style={{ animationDelay: '1.5s' }} />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pb-24 pt-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pb-24 pt-8 md:pt-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Content */}
           <motion.div
@@ -51,7 +51,7 @@ export default function Hero() {
                     key={word}
                     variants={fadeUpVariant}
                     custom={i}
-                    className="font-display text-6xl md:text-8xl font-bold text-espresso leading-none"
+                    className="font-display text-5xl sm:text-6xl md:text-8xl font-bold text-espresso leading-none"
                   >
                     {word}
                   </motion.span>
@@ -60,24 +60,26 @@ export default function Hero() {
 
               {/* Line 2: Invitations (italic gold) */}
               <motion.div variants={fadeUpVariant} className="overflow-hidden">
-                <span className="font-display text-6xl md:text-8xl font-bold italic text-gold leading-none">
+                <span className="font-display text-5xl sm:text-6xl md:text-8xl font-bold italic text-gold leading-none">
                   {headline2}
                 </span>
               </motion.div>
 
-              {/* Line 3: Crafted in Minutes */}
-              <div className="flex flex-wrap gap-x-3 items-center mt-2 overflow-hidden">
-                {headline3.map((word, i) => (
-                  <motion.span
-                    key={word + i}
-                    variants={fadeUpVariant}
-                    custom={i + 3}
-                    className="font-display text-3xl md:text-4xl font-normal text-espresso/70 leading-none"
-                  >
-                    {word}
-                  </motion.span>
-                ))}
-                {/* Animated SVG underline */}
+              {/* Line 3: Crafted in Minutes + SVG underline */}
+              <div className="flex flex-col items-start gap-1 mt-2 overflow-hidden">
+                <div className="flex flex-wrap gap-x-3 items-center">
+                  {headline3.map((word, i) => (
+                    <motion.span
+                      key={word + i}
+                      variants={fadeUpVariant}
+                      custom={i + 3}
+                      className="font-display text-2xl sm:text-3xl md:text-4xl font-normal text-espresso/70 leading-none"
+                    >
+                      {word}
+                    </motion.span>
+                  ))}
+                </div>
+                {/* Animated SVG underline — on its own line so it never wraps into words */}
                 <motion.svg
                   variants={fadeUpVariant}
                   custom={6}
@@ -98,12 +100,12 @@ export default function Hero() {
               </div>
             </div>
 
-            {/* CTA Buttons */}
-            <motion.div variants={fadeUpVariant} custom={4} className="flex flex-wrap gap-4 mt-4">
-              <Link to="/templates">
-                <Button size="lg" variant="primary">Explore Templates</Button>
+            {/* CTA Buttons — stack vertically on mobile */}
+            <motion.div variants={fadeUpVariant} custom={4} className="flex flex-col sm:flex-row gap-3 mt-4">
+              <Link to="/templates" className="w-full sm:w-auto">
+                <Button size="lg" variant="primary" className="w-full sm:w-auto">Explore Templates</Button>
               </Link>
-              <Button size="lg" variant="ghost">Watch Demo</Button>
+              <Button size="lg" variant="ghost" className="w-full sm:w-auto">Watch Demo</Button>
             </motion.div>
           </motion.div>
 

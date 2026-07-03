@@ -36,10 +36,10 @@ function StatCounter({ value, label, suffix = '' }) {
 
   return (
     <div ref={ref} className="flex flex-col items-center gap-1">
-      <span className="font-display text-4xl md:text-5xl font-bold text-espresso">
+      <span className="font-display text-3xl md:text-5xl font-bold text-espresso">
         {count}{suffix}
       </span>
-      <span className="text-sm text-espresso/50">{label}</span>
+      <span className="text-xs sm:text-sm text-espresso/50">{label}</span>
     </div>
   )
 }
@@ -120,11 +120,11 @@ export default function Features() {
                 <Timer className="w-5 h-5 text-gold" strokeWidth={1.5} />
               </div>
               <h3 className="font-semibold text-cream text-base">Countdown Timer</h3>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 sm:gap-3">
                 {['32', '14', '08', '45'].map((val, i) => (
                   <div key={i} className="flex flex-col items-center gap-1">
-                    <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center">
-                      <span className="font-display text-xl font-bold text-cream">{val}</span>
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-white/10 flex items-center justify-center">
+                      <span className="font-display text-lg sm:text-xl font-bold text-cream">{val}</span>
                     </div>
                     <span className="text-[9px] text-cream/40 uppercase tracking-widest">
                       {['Days', 'Hrs', 'Min', 'Sec'][i]}
@@ -158,20 +158,22 @@ export default function Features() {
             </div>
           </div>
 
-          {/* Small feature cards */}
-          {smallFeatures.map(({ icon: Icon, name, desc }) => (
-            <div key={name} className="bg-warm-100/60 ring-1 ring-espresso/8 p-1.5 rounded-[1.5rem]">
-              <div className="bg-cream shadow-[inset_0_1px_1px_rgba(255,255,255,0.6)] rounded-[calc(1.5rem-6px)] h-full p-4 flex flex-col gap-3">
-                <div className="w-8 h-8 rounded-lg bg-espresso/5 flex items-center justify-center">
-                  <Icon className="w-4 h-4 text-espresso/50" strokeWidth={1.5} />
-                </div>
-                <div>
-                  <h4 className="text-sm font-semibold text-espresso">{name}</h4>
-                  <p className="text-[11px] text-espresso/50 mt-0.5 leading-relaxed">{desc}</p>
+          {/* Small feature cards — 2 per row on mobile, 2 on tablet, 4 on desktop */}
+          <div className="col-span-1 md:col-span-2 lg:col-span-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            {smallFeatures.map(({ icon: Icon, name, desc }) => (
+              <div key={name} className="bg-warm-100/60 ring-1 ring-espresso/8 p-1.5 rounded-[1.5rem]">
+                <div className="bg-cream shadow-[inset_0_1px_1px_rgba(255,255,255,0.6)] rounded-[calc(1.5rem-6px)] h-full p-4 flex flex-col gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-espresso/5 flex items-center justify-center">
+                    <Icon className="w-4 h-4 text-espresso/50" strokeWidth={1.5} />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-semibold text-espresso">{name}</h4>
+                    <p className="text-[11px] text-espresso/50 mt-0.5 leading-relaxed">{desc}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>

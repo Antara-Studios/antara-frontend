@@ -49,7 +49,7 @@ function CellValue({ value }) {
 
 export default function PricingPage() {
   return (
-    <main className="pt-24 min-h-screen">
+    <main className="pt-20 md:pt-24 min-h-screen">
       {/* Reuse Pricing section */}
       <Pricing />
 
@@ -59,27 +59,29 @@ export default function PricingPage() {
           <h2 className="font-display text-3xl font-bold text-espresso text-center mb-12">
             Full Feature Comparison
           </h2>
-          <div className="overflow-x-auto rounded-2xl ring-1 ring-espresso/8">
-            <table className="w-full min-w-[600px]">
-              <thead>
-                <tr className="bg-warm-100 border-b border-espresso/10">
-                  <th className="text-left px-6 py-4 text-sm font-semibold text-espresso/50 w-[40%]">Feature</th>
-                  <th className="text-center px-6 py-4 text-sm font-semibold text-espresso">Free</th>
-                  <th className="text-center px-6 py-4 text-sm font-semibold text-gold">Premium</th>
-                  <th className="text-center px-6 py-4 text-sm font-semibold text-espresso">Elite</th>
-                </tr>
-              </thead>
-              <tbody>
-                {comparisonFeatures.map((row, i) => (
-                  <tr key={row.feature} className={`border-b border-espresso/6 ${i % 2 === 0 ? 'bg-cream' : 'bg-warm-50'}`}>
-                    <td className="px-6 py-3.5 text-sm text-espresso/80">{row.feature}</td>
-                    <td className="px-6 py-3.5 text-center"><CellValue value={row.free} /></td>
-                    <td className="px-6 py-3.5 text-center bg-gold/3"><CellValue value={row.premium} /></td>
-                    <td className="px-6 py-3.5 text-center"><CellValue value={row.elite} /></td>
+          <div className="overflow-x-auto ring-1 ring-espresso/8 rounded-2xl scroll-touch">
+            <div className="rounded-2xl overflow-hidden">
+              <table className="w-full min-w-[600px]">
+                <thead>
+                  <tr className="bg-warm-100 border-b border-espresso/10">
+                    <th className="text-left px-4 sm:px-6 py-4 text-xs sm:text-sm font-semibold text-espresso/50 w-[40%] max-w-[160px]">Feature</th>
+                    <th className="text-center px-4 sm:px-6 py-4 text-xs sm:text-sm font-semibold text-espresso">Free</th>
+                    <th className="text-center px-4 sm:px-6 py-4 text-xs sm:text-sm font-semibold text-gold">Premium</th>
+                    <th className="text-center px-4 sm:px-6 py-4 text-xs sm:text-sm font-semibold text-espresso">Elite</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {comparisonFeatures.map((row, i) => (
+                    <tr key={row.feature} className={`border-b border-espresso/6 ${i % 2 === 0 ? 'bg-cream' : 'bg-warm-50'}`}>
+                      <td className="px-4 sm:px-6 py-3.5 text-xs sm:text-sm text-espresso/80 max-w-[160px] break-words">{row.feature}</td>
+                      <td className="px-4 sm:px-6 py-3.5 text-center"><CellValue value={row.free} /></td>
+                      <td className="px-4 sm:px-6 py-3.5 text-center bg-gold/3"><CellValue value={row.premium} /></td>
+                      <td className="px-4 sm:px-6 py-3.5 text-center"><CellValue value={row.elite} /></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </section>

@@ -58,11 +58,11 @@ export default function HowItWorks() {
                 key={step.number}
                 variants={fadeUpVariant}
                 custom={i}
-                className="relative flex flex-col gap-5 p-8 rounded-[2rem] bg-warm-50 ring-1 ring-espresso/8"
+                className="relative flex flex-col gap-5 p-6 sm:p-8 rounded-[2rem] bg-warm-50 ring-1 ring-espresso/8"
               >
-                {/* Ghost step number */}
+                {/* Ghost step number — hidden on mobile to prevent clip into previous section */}
                 <span
-                  className="absolute -top-8 left-4 font-display text-[120px] font-bold leading-none select-none pointer-events-none"
+                  className="hidden sm:block absolute -top-8 left-4 font-display text-[120px] font-bold leading-none select-none pointer-events-none"
                   style={{ color: 'rgba(44,24,16,0.04)' }}
                   aria-hidden="true"
                 >
