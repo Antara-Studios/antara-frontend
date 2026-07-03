@@ -20,7 +20,7 @@ export default function SectionLabel({
       initial="hidden"
       animate={inView ? 'visible' : 'hidden'}
       className={`
-        flex flex-col gap-4 mb-8 md:mb-16
+        flex flex-col gap-3 sm:gap-4 mb-8 sm:mb-10 md:mb-16
         ${align === 'center' ? 'items-center text-center' : 'items-start text-left'}
         ${className}
       `}
@@ -32,7 +32,7 @@ export default function SectionLabel({
       )}
       <motion.h2
         variants={fadeUpVariant}
-        className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-espresso leading-tight break-words"
+        className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-espresso leading-tight break-words"
       >
         {heading}
       </motion.h2>

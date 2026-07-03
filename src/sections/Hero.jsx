@@ -33,25 +33,25 @@ export default function Hero() {
         <div className="absolute top-[15%] right-[35%] w-2 h-2 bg-gold/30 rounded-full animate-pulse-soft" style={{ animationDelay: '1.5s' }} />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pb-24 pt-8 md:pt-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pb-20 pt-24 sm:pt-28 md:pt-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           {/* Content */}
           <motion.div
             variants={staggerContainer}
             initial="hidden"
             animate="visible"
-            className="flex flex-col gap-8"
+            className="flex flex-col gap-6 sm:gap-8"
           >
             {/* Headline */}
             <div className="flex flex-col gap-1">
               {/* Line 1: Beautiful Digital */}
-              <div className="flex flex-wrap gap-x-4 overflow-hidden">
+              <div className="flex flex-wrap gap-x-3 sm:gap-x-4 overflow-hidden">
                 {headlineWords.map((word, i) => (
                   <motion.span
                     key={word}
                     variants={fadeUpVariant}
                     custom={i}
-                    className="font-display text-5xl sm:text-6xl md:text-8xl font-bold text-espresso leading-none"
+                    className="font-display text-[2.75rem] xs:text-5xl sm:text-6xl md:text-8xl font-bold text-espresso leading-none"
                   >
                     {word}
                   </motion.span>
@@ -60,20 +60,20 @@ export default function Hero() {
 
               {/* Line 2: Invitations (italic gold) */}
               <motion.div variants={fadeUpVariant} className="overflow-hidden">
-                <span className="font-display text-5xl sm:text-6xl md:text-8xl font-bold italic text-gold leading-none">
+                <span className="font-display text-[2.75rem] xs:text-5xl sm:text-6xl md:text-8xl font-bold italic text-gold leading-none">
                   {headline2}
                 </span>
               </motion.div>
 
               {/* Line 3: Crafted in Minutes + SVG underline */}
               <div className="flex flex-col items-start gap-1 mt-2 overflow-hidden">
-                <div className="flex flex-wrap gap-x-3 items-center">
+                <div className="flex flex-wrap gap-x-2 sm:gap-x-3 items-center">
                   {headline3.map((word, i) => (
                     <motion.span
                       key={word + i}
                       variants={fadeUpVariant}
                       custom={i + 3}
-                      className="font-display text-2xl sm:text-3xl md:text-4xl font-normal text-espresso/70 leading-none"
+                      className="font-display text-xl sm:text-3xl md:text-4xl font-normal text-espresso/70 leading-none"
                     >
                       {word}
                     </motion.span>
@@ -101,11 +101,11 @@ export default function Hero() {
             </div>
 
             {/* CTA Buttons — stack vertically on mobile */}
-            <motion.div variants={fadeUpVariant} custom={4} className="flex flex-col sm:flex-row gap-3 mt-4">
-              <Link to="/templates" className="w-full sm:w-auto">
-                <Button size="lg" variant="primary" className="w-full sm:w-auto">Explore Templates</Button>
+            <motion.div variants={fadeUpVariant} custom={4} className="flex flex-col xs:flex-row gap-3 mt-2 sm:mt-4">
+              <Link to="/templates" className="w-full xs:w-auto">
+                <Button size="md" variant="primary" className="w-full xs:w-auto sm:!px-8 sm:!py-4 sm:!text-base">Explore Templates</Button>
               </Link>
-              <Button size="lg" variant="ghost" className="w-full sm:w-auto">Watch Demo</Button>
+              <Button size="md" variant="ghost" className="w-full xs:w-auto sm:!px-8 sm:!py-4 sm:!text-base">Watch Demo</Button>
             </motion.div>
           </motion.div>
 

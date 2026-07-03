@@ -53,7 +53,7 @@ const cards = [
 function InvitationCard({ card }) {
   return (
     <div
-      className={`relative w-64 sm:w-72 flex-shrink-0 snap-start ${card.bg} rounded-[2rem] overflow-hidden`}
+      className={`relative w-52 xs:w-60 sm:w-72 flex-shrink-0 snap-start ${card.bg} rounded-[1.5rem] sm:rounded-[2rem] overflow-hidden`}
       style={{ aspectRatio: '9/16' }}
     >
       {/* Outer bezel sim */}
@@ -98,7 +98,7 @@ export default function DemoStrip() {
   const constraintsRef = useRef(null)
 
   return (
-    <section className="py-24 overflow-hidden" aria-label="Live Previews">
+    <section className="py-16 sm:py-20 lg:py-24 overflow-hidden" aria-label="Live Previews">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionLabel badge="Live Previews" heading="Experience Before You Decide" align="center" />
       </div>

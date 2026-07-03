@@ -26,10 +26,10 @@ const socialLinks = [
 export default function Footer() {
   return (
     <footer className="bg-warm-100 border-t border-espresso/10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 lg:gap-12">
           {/* Brand Column */}
-          <div className="flex flex-col gap-5">
+          <div className="col-span-2 md:col-span-1 flex flex-col gap-4 sm:gap-5">
             <Link to="/" className="flex items-baseline gap-1">
               <span className="font-display text-2xl font-bold italic text-espresso">Antara</span>
               <span className="font-sans text-sm font-light text-espresso/60 tracking-wide">Studios</span>

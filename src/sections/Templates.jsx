@@ -69,7 +69,7 @@ function TemplateCard({ template }) {
   return (
     <motion.div
       className={`relative overflow-hidden rounded-2xl ${template.bg} group ${template.span}`}
-      style={{ minHeight: template.featured ? 'clamp(260px, 35vw, 400px)' : 'clamp(160px, 20vw, 200px)' }}
+      style={{ minHeight: template.featured ? 'clamp(240px, 55vw, 400px)' : 'clamp(160px, 42vw, 200px)' }}
       whileHover="hover"
       initial="rest"
     >
@@ -125,7 +125,7 @@ export default function Templates() {
     : templates.filter((t) => t.style === activeFilter)
 
   return (
-    <section className="py-32" aria-label="Templates">
+    <section className="py-16 sm:py-24 lg:py-32" aria-label="Templates">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionLabel badge="Curated Designs" heading="50+ Premium Templates" align="center" />
 

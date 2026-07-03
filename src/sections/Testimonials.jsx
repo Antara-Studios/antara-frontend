@@ -85,7 +85,7 @@ export default function Testimonials() {
   const t = testimonials[current]
 
   return (
-    <section className="py-32 bg-warm-100" aria-label="Testimonials">
+    <section className="py-16 sm:py-24 lg:py-32 bg-warm-100" aria-label="Testimonials">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionLabel badge="Love Stories" heading="What Couples Are Saying" align="center" />
 
@@ -96,7 +96,7 @@ export default function Testimonials() {
           onMouseLeave={startAutoplay}
         >
           {/* Testimonial Slide */}
-          <div className="min-h-[280px] sm:min-h-[320px] flex items-center">
+          <div className="min-h-[260px] sm:min-h-[300px] flex items-center">
             <AnimatePresence mode="wait">
               <motion.div
                 key={current}
@@ -112,7 +112,7 @@ export default function Testimonials() {
                 </span>
 
                 {/* Quote */}
-                <blockquote className="font-display italic text-lg sm:text-xl md:text-2xl text-espresso leading-relaxed -mt-8">
+                <blockquote className="font-display italic text-base sm:text-xl md:text-2xl text-espresso leading-relaxed -mt-8">
                   {t.quote}
                 </blockquote>
 

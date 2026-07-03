@@ -67,9 +67,9 @@ function PricingCard({ plan, isAnnual }) {
   return (
     <div
       className={`
-        relative flex flex-col gap-6 rounded-[2rem] p-6 ring-1
+        relative flex flex-col gap-5 sm:gap-6 rounded-[1.5rem] sm:rounded-[2rem] p-5 sm:p-6 ring-1
         ${plan.recommended
-          ? 'bg-espresso text-cream ring-gold ring-2 md:scale-105 md:z-10 order-first md:order-none'
+          ? 'bg-espresso text-cream ring-gold ring-2 lg:scale-105 lg:z-10 order-first md:order-none'
           : 'bg-cream ring-espresso/10'}
       `}
     >
@@ -133,7 +133,7 @@ export default function Pricing() {
   const [isAnnual, setIsAnnual] = useState(false)
 
   return (
-    <section className="py-32" aria-label="Pricing">
+    <section className="py-16 sm:py-24 lg:py-32" aria-label="Pricing">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionLabel badge="Pricing" heading="Simple, Transparent Pricing" align="center" />
 
@@ -158,7 +158,7 @@ export default function Pricing() {
         </div>
 
         {/* Pricing Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 items-start lg:items-center">
           {plans.map((plan) => (
             <PricingCard key={plan.name} plan={plan} isAnnual={isAnnual} />
           ))}

@@ -36,10 +36,10 @@ function StatCounter({ value, label, suffix = '' }) {
 
   return (
     <div ref={ref} className="flex flex-col items-center gap-1">
-      <span className="font-display text-3xl md:text-5xl font-bold text-espresso">
+      <span className="font-display text-2xl sm:text-3xl md:text-5xl font-bold text-espresso">
         {count}{suffix}
       </span>
-      <span className="text-xs sm:text-sm text-espresso/50">{label}</span>
+      <span className="text-[11px] sm:text-xs md:text-sm text-espresso/50 text-center">{label}</span>
     </div>
   )
 }
@@ -61,7 +61,7 @@ const smallFeatures = [
 
 export default function Features() {
   return (
-    <section className="py-32 bg-warm-50" aria-label="Platform Features">
+    <section className="py-16 sm:py-24 lg:py-32 bg-warm-50" aria-label="Platform Features">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionLabel
           badge="Platform Features"
@@ -71,17 +71,17 @@ export default function Features() {
         />
 
         {/* Stats Row */}
-        <div className="grid grid-cols-3 gap-8 mb-16 py-10 border-y border-espresso/8">
+        <div className="grid grid-cols-3 gap-4 sm:gap-8 mb-10 sm:mb-16 py-6 sm:py-10 border-y border-espresso/8">
           <StatCounter value={15} suffix="+" label="Modules" />
           <StatCounter value={50} suffix="+" label="Templates" />
           <StatCounter value={10000} suffix="+" label="Invitations Sent" />
         </div>
 
         {/* Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           {/* RSVP Management — Large (col-span-2, row-span-2) */}
-          <div className="lg:col-span-2 lg:row-span-2 bg-gradient-to-br from-warm-200 to-champagne ring-1 ring-espresso/8 p-1.5 rounded-[2rem]">
-            <div className="bg-cream/80 rounded-[calc(2rem-6px)] h-full p-6 flex flex-col gap-5">
+          <div className="lg:col-span-2 lg:row-span-2 bg-gradient-to-br from-warm-200 to-champagne ring-1 ring-espresso/8 p-1.5 rounded-[1.5rem] sm:rounded-[2rem]">
+            <div className="bg-cream/80 rounded-[calc(1.5rem-6px)] sm:rounded-[calc(2rem-6px)] h-full p-4 sm:p-6 flex flex-col gap-4 sm:gap-5">
               <div className="w-10 h-10 rounded-xl bg-gold/15 flex items-center justify-center">
                 <ClipboardList className="w-5 h-5 text-gold" strokeWidth={1.5} />
               </div>
@@ -114,17 +114,17 @@ export default function Features() {
           </div>
 
           {/* Countdown Timer — Medium (col-span-2) */}
-          <div className="lg:col-span-2 bg-gradient-to-br from-espresso to-espresso-light ring-1 ring-white/5 p-1.5 rounded-[2rem]">
-            <div className="rounded-[calc(2rem-6px)] h-full p-6 flex flex-col gap-4">
+          <div className="lg:col-span-2 bg-gradient-to-br from-espresso to-espresso-light ring-1 ring-white/5 p-1.5 rounded-[1.5rem] sm:rounded-[2rem]">
+            <div className="rounded-[calc(1.5rem-6px)] sm:rounded-[calc(2rem-6px)] h-full p-4 sm:p-6 flex flex-col gap-3 sm:gap-4">
               <div className="w-10 h-10 rounded-xl bg-gold/20 flex items-center justify-center">
                 <Timer className="w-5 h-5 text-gold" strokeWidth={1.5} />
               </div>
               <h3 className="font-semibold text-cream text-base">Countdown Timer</h3>
-              <div className="flex items-center gap-2 sm:gap-3">
+              <div className="flex items-center gap-3">
                 {['32', '14', '08', '45'].map((val, i) => (
                   <div key={i} className="flex flex-col items-center gap-1">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-white/10 flex items-center justify-center">
-                      <span className="font-display text-lg sm:text-xl font-bold text-cream">{val}</span>
+                    <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center">
+                      <span className="font-display text-xl font-bold text-cream">{val}</span>
                     </div>
                     <span className="text-[9px] text-cream/40 uppercase tracking-widest">
                       {['Days', 'Hrs', 'Min', 'Sec'][i]}
@@ -136,8 +136,8 @@ export default function Features() {
           </div>
 
           {/* Venue Map — Medium (col-span-2) */}
-          <div className="lg:col-span-2 bg-gradient-to-br from-sage/20 to-warm-100 ring-1 ring-espresso/8 p-1.5 rounded-[2rem]">
-            <div className="bg-cream/60 rounded-[calc(2rem-6px)] h-full p-6 flex flex-col gap-4">
+          <div className="lg:col-span-2 bg-gradient-to-br from-sage/20 to-warm-100 ring-1 ring-espresso/8 p-1.5 rounded-[1.5rem] sm:rounded-[2rem]">
+            <div className="bg-cream/60 rounded-[calc(1.5rem-6px)] sm:rounded-[calc(2rem-6px)] h-full p-4 sm:p-6 flex flex-col gap-4">
               <div className="w-10 h-10 rounded-xl bg-sage/15 flex items-center justify-center">
                 <MapPin className="w-5 h-5 text-sage" strokeWidth={1.5} />
               </div>
@@ -158,11 +158,11 @@ export default function Features() {
             </div>
           </div>
 
-          {/* Small feature cards — 2 per row on mobile, 2 on tablet, 4 on desktop */}
-          <div className="col-span-1 md:col-span-2 lg:col-span-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+          {/* Small feature cards — 2 per row on mobile, 3 on tablet, 4 on desktop */}
+          <div className="col-span-1 md:col-span-2 lg:col-span-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
             {smallFeatures.map(({ icon: Icon, name, desc }) => (
-              <div key={name} className="bg-warm-100/60 ring-1 ring-espresso/8 p-1.5 rounded-[1.5rem]">
-                <div className="bg-cream shadow-[inset_0_1px_1px_rgba(255,255,255,0.6)] rounded-[calc(1.5rem-6px)] h-full p-4 flex flex-col gap-3">
+              <div key={name} className="bg-warm-100/60 ring-1 ring-espresso/8 p-1 sm:p-1.5 rounded-[1.25rem] sm:rounded-[1.5rem]">
+                <div className="bg-cream shadow-[inset_0_1px_1px_rgba(255,255,255,0.6)] rounded-[calc(1.25rem-4px)] sm:rounded-[calc(1.5rem-6px)] h-full p-3 sm:p-4 flex flex-col gap-2 sm:gap-3">
                   <div className="w-8 h-8 rounded-lg bg-espresso/5 flex items-center justify-center">
                     <Icon className="w-4 h-4 text-espresso/50" strokeWidth={1.5} />
                   </div>

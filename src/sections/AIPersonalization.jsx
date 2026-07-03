@@ -34,23 +34,23 @@ export default function AIPersonalization() {
   }, [rightInView])
 
   return (
-    <section className="py-32 bg-warm-50" aria-label="AI Personalization">
+    <section className="py-16 sm:py-24 lg:py-32 bg-warm-50" aria-label="AI Personalization">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
           {/* Left Block */}
           <motion.div
             ref={leftRef}
             variants={staggerContainer}
             initial="hidden"
             animate={leftInView ? 'visible' : 'hidden'}
-            className="flex flex-col gap-8"
+            className="flex flex-col gap-6 sm:gap-8"
           >
             <motion.div variants={slideInLeft}>
               <Badge variant="gold">Powered by AI</Badge>
             </motion.div>
             <motion.h2
               variants={fadeUpVariant}
-              className="font-display text-4xl md:text-5xl font-bold text-espresso leading-tight"
+              className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-espresso leading-tight"
             >
               Intelligence Meets Elegance
             </motion.h2>
@@ -89,8 +89,8 @@ export default function AIPersonalization() {
             />
 
             {/* Double-bezel card */}
-            <div className="relative bg-warm-100/60 ring-1 ring-espresso/8 p-1.5 rounded-[2rem] w-full max-w-sm">
-              <div className="bg-cream shadow-[inset_0_1px_1px_rgba(255,255,255,0.6)] rounded-[calc(2rem-6px)] p-5 sm:p-8 relative min-h-[320px] sm:min-h-[400px]">
+            <div className="relative bg-warm-100/60 ring-1 ring-espresso/8 p-1.5 rounded-[1.5rem] sm:rounded-[2rem] w-full max-w-sm">
+              <div className="bg-cream shadow-[inset_0_1px_1px_rgba(255,255,255,0.6)] rounded-[calc(1.5rem-6px)] sm:rounded-[calc(2rem-6px)] p-5 sm:p-8 relative min-h-[260px] sm:min-h-[360px] md:min-h-[400px]">
                 {/* AI badge */}
                 <div className="absolute top-4 right-4">
                   <Badge variant="gold">AI Generated</Badge>

@@ -9,7 +9,7 @@ export default function CTABanner() {
 
   return (
     <section
-      className="py-32 relative overflow-hidden"
+      className="py-16 sm:py-24 lg:py-32 relative overflow-hidden"
       aria-label="Call to action"
       style={{
         background: 'linear-gradient(135deg, #EDE0D0 0%, #F0E2C8 50%, #F5EFE6 100%)',
@@ -36,12 +36,12 @@ export default function CTABanner() {
       >
         <motion.h2
           variants={fadeUpVariant}
-          className="font-display text-4xl md:text-6xl font-bold text-espresso leading-tight max-w-3xl"
+          className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-espresso leading-tight max-w-3xl"
         >
           Start Your Wedding Story Today
         </motion.h2>
 
-        <motion.p variants={fadeUpVariant} className="text-lg text-espresso/60 max-w-xl leading-relaxed">
+        <motion.p variants={fadeUpVariant} className="text-base sm:text-lg text-espresso/60 max-w-xl leading-relaxed">
           Join 10,000+ couples who chose Antara Studios to share their love story with the world — beautifully and digitally.
         </motion.p>
 
