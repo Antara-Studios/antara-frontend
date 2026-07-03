@@ -1,11 +1,20 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
+import { useEffect } from 'react'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Home from './pages/Home'
 import TemplatesPage from './pages/TemplatesPage'
 import PricingPage from './pages/PricingPage'
 import CreatePage from './pages/CreatePage'
+
+function ScrollToTop() {
+  const { pathname } = useLocation()
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
+  return null
+}
 
 function PageWrapper({ children }) {
   return (
@@ -26,6 +35,7 @@ function AppContent() {
 
   return (
     <>
+      <ScrollToTop />
       {!isCreatePage && <Navbar />}
 
       <AnimatePresence mode="wait">
