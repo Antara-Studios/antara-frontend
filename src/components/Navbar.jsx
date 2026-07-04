@@ -51,8 +51,8 @@ export default function Navbar() {
         animate={{ y: hidden && !menuOpen ? '-150%' : '0%' }}
         transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
         className={`
-          fixed top-3 md:top-6 left-1/2 -translate-x-1/2 z-50
-          w-[calc(100vw-1.5rem)] md:w-max max-w-[calc(100vw-1.5rem)]
+          fixed top-3 md:top-6 z-50
+          left-4 right-4 md:left-1/2 md:right-auto md:-translate-x-1/2 md:w-max
           backdrop-blur-xl bg-cream/80 ring-1 ring-espresso/10 rounded-full px-4 sm:px-6 py-2.5 sm:py-3
           flex items-center justify-between md:justify-start gap-3 md:gap-8
           ${scrolled ? 'shadow-lg shadow-espresso/10 bg-cream/90 backdrop-blur-2xl' : ''}
@@ -92,20 +92,20 @@ export default function Navbar() {
         <button
           onClick={() => setMenuOpen((v) => !v)}
           aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-          className="md:hidden relative w-6 h-5 flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold rounded-sm"
+          className="md:hidden relative w-5 h-4 flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold rounded-sm"
         >
           <span
             className={`
               absolute left-0 w-full h-0.5 bg-espresso rounded-full
               transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]
-              ${menuOpen ? 'top-[9px] rotate-45' : 'top-0'}
+              ${menuOpen ? 'top-[7px] rotate-45' : 'top-[3px]'}
             `}
           />
           <span
             className={`
               absolute left-0 w-full h-0.5 bg-espresso rounded-full
               transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]
-              ${menuOpen ? 'top-[9px] -rotate-45' : 'top-[9px]'}
+              ${menuOpen ? 'top-[7px] -rotate-45' : 'top-[9px]'}
             `}
           />
         </button>
