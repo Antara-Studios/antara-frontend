@@ -1,48 +1,10 @@
-import { useState, useEffect } from 'react'
 import {
   ClipboardList, Timer, MapPin, Music, Image, QrCode,
   MessageCircle, Globe, Gift, Shirt, Hotel, Calendar,
   Users, Lock, BarChart2,
 } from 'lucide-react'
 import SectionLabel from '../components/ui/SectionLabel'
-import useScrollReveal from '../hooks/useScrollReveal'
 
-function useCounter(target, inView) {
-  const [count, setCount] = useState(0)
-
-  useEffect(() => {
-    if (!inView) return
-    let start = 0
-    const duration = 1500
-    const step = (target / duration) * 16
-    const timer = setInterval(() => {
-      start += step
-      if (start >= target) {
-        setCount(target)
-        clearInterval(timer)
-      } else {
-        setCount(Math.floor(start))
-      }
-    }, 16)
-    return () => clearInterval(timer)
-  }, [inView, target])
-
-  return count
-}
-
-function StatCounter({ value, label, suffix = '' }) {
-  const { ref, inView } = useScrollReveal()
-  const count = useCounter(value, inView)
-
-  return (
-    <div ref={ref} className="flex flex-col items-center gap-1">
-      <span className="font-display text-2xl sm:text-3xl md:text-5xl font-bold text-espresso">
-        {count}{suffix}
-      </span>
-      <span className="text-[11px] sm:text-xs md:text-sm text-espresso/50 text-center">{label}</span>
-    </div>
-  )
-}
 
 const smallFeatures = [
   { icon: Music, name: 'Background Music', desc: 'Set the mood with custom playlists' },
@@ -64,18 +26,10 @@ export default function Features() {
     <section className="py-16 sm:py-24 lg:py-32 bg-warm-50" aria-label="Platform Features">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionLabel
-          badge="Platform Features"
           heading="Everything You Need"
           subheading="Optional modules — add only what matters to you"
           align="center"
         />
-
-        {/* Stats Row */}
-        <div className="grid grid-cols-3 gap-4 sm:gap-8 mb-10 sm:mb-16 py-6 sm:py-10 border-y border-espresso/8">
-          <StatCounter value={15} suffix="+" label="Modules" />
-          <StatCounter value={50} suffix="+" label="Templates" />
-          <StatCounter value={10000} suffix="+" label="Invitations Sent" />
-        </div>
 
         {/* Bento Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">

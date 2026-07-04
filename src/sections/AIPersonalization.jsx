@@ -45,9 +45,6 @@ export default function AIPersonalization() {
             animate={leftInView ? 'visible' : 'hidden'}
             className="flex flex-col gap-6 sm:gap-8"
           >
-            <motion.div variants={slideInLeft}>
-              <Badge variant="gold">Powered by AI</Badge>
-            </motion.div>
             <motion.h2
               variants={fadeUpVariant}
               className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-espresso leading-tight"

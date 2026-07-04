@@ -1,5 +1,4 @@
 import Hero from '../sections/Hero'
-import DemoStrip from '../sections/DemoStrip'
 import Templates from '../sections/Templates'
 import Features from '../sections/Features'
 import HowItWorks from '../sections/HowItWorks'
@@ -13,7 +12,6 @@ export default function Home() {
   return (
     <main className="pt-20 md:pt-24">
       <Hero />
-      <DemoStrip />
       <Templates />
       <Features />
       <HowItWorks />

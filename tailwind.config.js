@@ -73,5 +73,13 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addBase, theme }) {
+      addBase({
+        '*': {
+          '--tw-ring-color': 'transparent',
+        },
+      })
+    },
+  ],
 }

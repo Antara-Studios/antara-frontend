@@ -100,7 +100,7 @@ export default function DemoStrip() {
   return (
     <section className="py-16 sm:py-20 lg:py-24 overflow-hidden" aria-label="Live Previews">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionLabel badge="Live Previews" heading="Experience Before You Decide" align="center" />
+        <SectionLabel heading="Experience Before You Decide" align="center" accent="underline:Experience" />
       </div>
 
       {/* Scroll container: touch-pan-y allows vertical page scroll on mobile,

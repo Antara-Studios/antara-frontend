@@ -87,7 +87,7 @@ export default function Testimonials() {
   return (
     <section className="py-16 sm:py-24 lg:py-32 bg-warm-100" aria-label="Testimonials">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionLabel badge="Love Stories" heading="What Couples Are Saying" align="center" />
+        <SectionLabel heading="What Couples Are Saying" align="center" accent="asterisk" />
 
         {/* On mobile: content on top, arrows + dots below. On sm+: side-by-side with arrows */}
         <div

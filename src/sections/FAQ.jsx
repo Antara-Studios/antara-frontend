@@ -48,8 +48,7 @@ export default function FAQ() {
           {/* Left */}
           <div className="flex flex-col gap-6">
             <SectionLabel
-              badge="FAQ"
-              heading="Frequently Asked Questions"
+                            heading="Frequently Asked Questions"
               align="left"
             />
             <p className="text-espresso/60 leading-relaxed -mt-8">

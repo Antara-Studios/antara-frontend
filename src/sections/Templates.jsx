@@ -68,8 +68,8 @@ const templates = [
 function TemplateCard({ template }) {
   return (
     <motion.div
-      className={`relative overflow-hidden rounded-2xl ${template.bg} group ${template.span}`}
-      style={{ minHeight: template.featured ? 'clamp(240px, 55vw, 400px)' : 'clamp(160px, 42vw, 200px)' }}
+      className={`relative overflow-hidden rounded-2xl ${template.bg} group ${template.span} h-full`}
+      style={{ minHeight: '200px' }}
       whileHover="hover"
       initial="rest"
     >
@@ -127,7 +127,7 @@ export default function Templates() {
   return (
     <section className="py-16 sm:py-24 lg:py-32" aria-label="Templates">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionLabel badge="Curated Designs" heading="50+ Premium Templates" align="center" />
+        <SectionLabel heading="50+ Premium Templates" align="center" accent="gradient" />
 
         {/* Filter Tabs — scrollable row on mobile, centered wrap on desktop */}
         <div className="flex items-center gap-1 mb-8 md:mb-12 overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0 sm:justify-center sm:flex-wrap hide-scrollbar scroll-touch pb-1 flex-nowrap sm:flex-wrap">
@@ -153,8 +153,22 @@ export default function Templates() {
           ))}
         </div>
 
-        {/* Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {/* Mobile: horizontal swipe strip — hidden on md+ */}
+        <div className="md:hidden overflow-x-auto snap-x snap-mandatory hide-scrollbar scroll-touch pb-2" style={{ marginLeft: '-1rem', marginRight: '-1rem', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}>
+          <div className="flex gap-3">
+          {filtered.map((template) => (
+            <div
+              key={template.id}
+              className="flex-shrink-0 snap-start w-[72vw] xs:w-[65vw] h-56"
+            >
+              <TemplateCard template={template} />
+            </div>
+          ))}
+          </div>
+        </div>
+
+        {/* Desktop: Bento Grid — hidden on mobile */}
+        <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filtered.map((template) => (
             <TemplateCard key={template.id} template={template} />
           ))}

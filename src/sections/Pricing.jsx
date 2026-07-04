@@ -135,7 +135,7 @@ export default function Pricing() {
   return (
     <section className="py-16 sm:py-24 lg:py-32" aria-label="Pricing">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionLabel badge="Pricing" heading="Simple, Transparent Pricing" align="center" />
+        <SectionLabel heading="Simple, Transparent Pricing" align="center" accent="highlight:Transparent" />
 
         {/* Toggle */}
         <div className="flex items-center justify-center gap-4 mb-12">

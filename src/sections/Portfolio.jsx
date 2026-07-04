@@ -77,8 +77,7 @@ export default function Portfolio() {
     <section className="py-32" aria-label="Portfolio" id="portfolio">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionLabel
-          badge="Our Portfolio"
-          heading="Invitations Across Every Culture"
+                    heading="Invitations Across Every Culture"
           align="center"
         />
 
