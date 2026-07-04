@@ -1,34 +1,324 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Link } from 'react-router-dom'
-import { Search, Star, SlidersHorizontal, X } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import { Star, SlidersHorizontal, X } from 'lucide-react'
 import Badge from '../components/ui/Badge'
+import { useAuth } from '../context/AuthContext'
+import { useAuthModal } from '../context/AuthModalContext'
 
 const allTemplates = [
-  { id: 1, name: 'Royal Rajasthani', style: 'Hindu', bg: 'bg-gradient-to-br from-red-900 via-orange-900 to-yellow-800', rating: 4.9, uses: '2.1k', price: 'Premium' },
-  { id: 2, name: 'Garden Bloom', style: 'Christian', bg: 'bg-gradient-to-br from-blush to-pink-200', rating: 4.8, uses: '1.4k', price: 'Free' },
-  { id: 3, name: 'Emerald Nikah', style: 'Muslim', bg: 'bg-gradient-to-br from-emerald-800 to-teal-700', rating: 4.7, uses: '980', price: 'Premium' },
-  { id: 4, name: 'Lotus Mandapam', style: 'South Indian', bg: 'bg-gradient-to-br from-yellow-700 to-amber-600', rating: 4.9, uses: '1.8k', price: 'Premium' },
-  { id: 5, name: 'Seaside Vows', style: 'Destination', bg: 'bg-gradient-to-br from-sky-700 to-cyan-500', rating: 4.6, uses: '760', price: 'Free' },
-  { id: 6, name: 'Modern Minimal', style: 'Modern', bg: 'bg-gradient-to-br from-stone-800 to-stone-600', rating: 4.8, uses: '3.2k', price: 'Free' },
-  { id: 7, name: 'Floral Romance', style: 'Christian', bg: 'bg-gradient-to-br from-rose-200 to-pink-300', rating: 4.7, uses: '890', price: 'Premium' },
-  { id: 8, name: 'Golden Heritage', style: 'Hindu', bg: 'bg-gradient-to-br from-amber-700 to-yellow-600', rating: 4.9, uses: '1.5k', price: 'Premium' },
-  { id: 9, name: 'Sacred Union', style: 'Muslim', bg: 'bg-gradient-to-br from-indigo-900 to-purple-800', rating: 4.8, uses: '720', price: 'Free' },
-  { id: 10, name: 'Tropical Bliss', style: 'Destination', bg: 'bg-gradient-to-br from-teal-600 to-emerald-400', rating: 4.6, uses: '540', price: 'Premium' },
-  { id: 11, name: 'Ivory Classic', style: 'Christian', bg: 'bg-gradient-to-br from-stone-200 to-warm-300', rating: 4.7, uses: '1.1k', price: 'Free' },
-  { id: 12, name: 'Velvet Luxe', style: 'Modern', bg: 'bg-gradient-to-br from-purple-900 to-pink-800', rating: 4.9, uses: '2.0k', price: 'Premium' },
+  {
+    id: 1,
+    name: 'Royal Rajasthani',
+    style: 'Hindu',
+    bg: 'bg-gradient-to-br from-red-900 via-orange-900 to-yellow-800',
+    cardBg: '#7B1C1C',
+    accent: '#C9A96E',
+    textColor: '#FFF8EE',
+    mutedColor: '#FFECC0',
+    ornament: '❧',
+    coupleNames: 'Priya & Arjun',
+    weddingDate: '14th February 2026',
+    weddingVenue: 'Udaipur, Rajasthan',
+    decorLine: '— शुभ विवाह —',
+    rating: 4.9,
+    uses: '2.1k',
+    price: 'Premium',
+  },
+  {
+    id: 2,
+    name: 'Garden Bloom',
+    style: 'Christian',
+    bg: 'bg-gradient-to-br from-blush to-pink-200',
+    cardBg: '#F2D9D0',
+    accent: '#A0614F',
+    textColor: '#4A1C14',
+    mutedColor: '#7A3A2E',
+    ornament: '✦',
+    coupleNames: 'Sarah & James',
+    weddingDate: 'Saturday, 6th June 2026',
+    weddingVenue: 'Rose Garden, London',
+    decorLine: '— Together Forever —',
+    rating: 4.8,
+    uses: '1.4k',
+    price: 'Free',
+  },
+  {
+    id: 3,
+    name: 'Emerald Nikah',
+    style: 'Muslim',
+    bg: 'bg-gradient-to-br from-emerald-800 to-teal-700',
+    cardBg: '#1A4A3A',
+    accent: '#C9A96E',
+    textColor: '#F0FFF8',
+    mutedColor: '#A8D8C8',
+    ornament: '☽',
+    coupleNames: 'Aisha & Khalid',
+    weddingDate: '20th Rajab 1447',
+    weddingVenue: 'Grand Mosque Hall, Dubai',
+    decorLine: '— بسم الله الرحمن الرحيم —',
+    rating: 4.7,
+    uses: '980',
+    price: 'Premium',
+  },
+  {
+    id: 4,
+    name: 'Lotus Mandapam',
+    style: 'South Indian',
+    bg: 'bg-gradient-to-br from-yellow-700 to-amber-600',
+    cardBg: '#7A4A08',
+    accent: '#FFD700',
+    textColor: '#FFF8E1',
+    mutedColor: '#FFE88A',
+    ornament: '✿',
+    coupleNames: 'Kavya & Vikram',
+    weddingDate: 'Vaikasi Visakam, 2026',
+    weddingVenue: 'Kapaleeshwarar Temple, Chennai',
+    decorLine: '— శుభ కళ్యాణం —',
+    rating: 4.9,
+    uses: '1.8k',
+    price: 'Premium',
+  },
+  {
+    id: 5,
+    name: 'Seaside Vows',
+    style: 'Destination',
+    bg: 'bg-gradient-to-br from-sky-700 to-cyan-500',
+    cardBg: '#0E4D6E',
+    accent: '#7DD3F0',
+    textColor: '#F0FAFF',
+    mutedColor: '#B8E8FA',
+    ornament: '⛵',
+    coupleNames: 'Emma & Luca',
+    weddingDate: 'July 12th, 2026',
+    weddingVenue: 'Santorini, Greece',
+    decorLine: '— Where the sea meets forever —',
+    rating: 4.6,
+    uses: '760',
+    price: 'Free',
+  },
+  {
+    id: 6,
+    name: 'Modern Minimal',
+    style: 'Modern',
+    bg: 'bg-gradient-to-br from-stone-800 to-stone-600',
+    cardBg: '#2A2420',
+    accent: '#C9A96E',
+    textColor: '#F5F0EB',
+    mutedColor: '#C0B8B0',
+    ornament: '◆',
+    coupleNames: 'Zoe & Marcus',
+    weddingDate: 'September 19, 2026',
+    weddingVenue: 'The Warehouse, NYC',
+    decorLine: '— simply, together —',
+    rating: 4.8,
+    uses: '3.2k',
+    price: 'Free',
+  },
+  {
+    id: 7,
+    name: 'Floral Romance',
+    style: 'Christian',
+    bg: 'bg-gradient-to-br from-rose-200 to-pink-300',
+    cardBg: '#E8C0C8',
+    accent: '#8B2252',
+    textColor: '#3A0A1A',
+    mutedColor: '#7A3A52',
+    ornament: '✾',
+    coupleNames: 'Isabella & Thomas',
+    weddingDate: 'May 3rd, 2026',
+    weddingVenue: 'St. Mary\'s Chapel, Bath',
+    decorLine: '— Love in full bloom —',
+    rating: 4.7,
+    uses: '890',
+    price: 'Premium',
+  },
+  {
+    id: 8,
+    name: 'Golden Heritage',
+    style: 'Hindu',
+    bg: 'bg-gradient-to-br from-amber-700 to-yellow-600',
+    cardBg: '#6A3A08',
+    accent: '#FFD700',
+    textColor: '#FFFBF0',
+    mutedColor: '#FFE8A0',
+    ornament: '卐',
+    coupleNames: 'Meera & Rohit',
+    weddingDate: 'Akshaya Tritiya, 2026',
+    weddingVenue: 'Birla Mandir, Jaipur',
+    decorLine: '— शुभ लग्न —',
+    rating: 4.9,
+    uses: '1.5k',
+    price: 'Premium',
+  },
+  {
+    id: 9,
+    name: 'Sacred Union',
+    style: 'Muslim',
+    bg: 'bg-gradient-to-br from-indigo-900 to-purple-800',
+    cardBg: '#1A1050',
+    accent: '#C9A96E',
+    textColor: '#F5F0FF',
+    mutedColor: '#C0B0F0',
+    ornament: '✦',
+    coupleNames: 'Fatima & Omar',
+    weddingDate: '15th Muharram 1448',
+    weddingVenue: 'Islamic Centre, Istanbul',
+    decorLine: '— ماشاء الله —',
+    rating: 4.8,
+    uses: '720',
+    price: 'Free',
+  },
+  {
+    id: 10,
+    name: 'Tropical Bliss',
+    style: 'Destination',
+    bg: 'bg-gradient-to-br from-teal-600 to-emerald-400',
+    cardBg: '#0E5A48',
+    accent: '#A8F0D8',
+    textColor: '#F0FFFA',
+    mutedColor: '#B8F0E0',
+    ornament: '✿',
+    coupleNames: 'Mia & Rafael',
+    weddingDate: 'March 22nd, 2026',
+    weddingVenue: 'Bali Clifftop, Indonesia',
+    decorLine: '— paradise found —',
+    rating: 4.6,
+    uses: '540',
+    price: 'Premium',
+  },
+  {
+    id: 11,
+    name: 'Ivory Classic',
+    style: 'Christian',
+    bg: 'bg-gradient-to-br from-stone-200 to-warm-300',
+    cardBg: '#EDE5D8',
+    accent: '#6A5A40',
+    textColor: '#2C1810',
+    mutedColor: '#5A4A30',
+    ornament: '❦',
+    coupleNames: 'Charlotte & William',
+    weddingDate: 'October 10th, 2026',
+    weddingVenue: 'Blenheim Palace, Oxford',
+    decorLine: '— timeless & true —',
+    rating: 4.7,
+    uses: '1.1k',
+    price: 'Free',
+  },
+  {
+    id: 12,
+    name: 'Velvet Luxe',
+    style: 'Modern',
+    bg: 'bg-gradient-to-br from-purple-900 to-pink-800',
+    cardBg: '#2A0A3A',
+    accent: '#E0A0C0',
+    textColor: '#FFF0F8',
+    mutedColor: '#D0A8C8',
+    ornament: '◈',
+    coupleNames: 'Nova & Dorian',
+    weddingDate: 'December 31st, 2026',
+    weddingVenue: 'The Velvet Room, Paris',
+    decorLine: '— luxury unbound —',
+    rating: 4.9,
+    uses: '2.0k',
+    price: 'Premium',
+  },
 ]
 
 const styles = ['Hindu', 'Christian', 'Muslim', 'South Indian', 'Modern', 'Destination']
 const sortOptions = ['Popular', 'Newest', 'Price: Low to High']
 
+function TemplateCard({ template, onUseTemplate }) {
+  const { cardBg, accent, textColor, mutedColor, ornament, coupleNames, decorLine } = template
+
+  return (
+    <div>
+      {/* Preview card */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="relative overflow-hidden rounded-2xl"
+        style={{ backgroundColor: cardBg, minHeight: '180px' }}
+      >
+        {/* Top meta row */}
+        <div className="flex items-center justify-between px-4 pt-3.5 pb-0">
+          <span
+            className="text-[9px] uppercase tracking-widest font-medium opacity-45"
+            style={{ color: textColor }}
+          >
+            {template.style}
+          </span>
+          <Badge variant={template.price === 'Free' ? 'sage' : 'gold'} className="text-[8px] px-2 py-0.5">
+            {template.price}
+          </Badge>
+        </div>
+
+        {/* Font & text preview — the actual content */}
+        <div className="flex flex-col items-center justify-center text-center px-6 py-6">
+          {/* Ornament */}
+          <span className="text-base leading-none mb-2 opacity-70" style={{ color: accent }}>
+            {ornament}
+          </span>
+          {/* Couple names in display font — this is the preview */}
+          <h3
+            className="font-display text-2xl font-bold leading-snug mb-2"
+            style={{ color: textColor }}
+          >
+            {coupleNames}
+          </h3>
+          {/* One line of flavour text showing the template's script/language */}
+          <p
+            className="text-[11px] opacity-50 leading-relaxed"
+            style={{ color: mutedColor, fontFamily: 'serif', fontStyle: 'italic' }}
+          >
+            {decorLine}
+          </p>
+        </div>
+      </motion.div>
+
+      {/* Actions — below the card, outside it */}
+      <div className="flex items-center justify-between mt-3 px-1">
+        <div>
+          <p className="text-[13px] font-medium text-espresso">{template.name}</p>
+          <div className="flex items-center gap-1 mt-0.5">
+            <Star className="w-3 h-3 fill-gold text-gold" />
+            <span className="text-[11px] text-espresso/50">{template.rating}</span>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <button className="px-3.5 py-1.5 rounded-full text-xs font-medium ring-1 ring-espresso/15 text-espresso/70 hover:ring-espresso/30 hover:text-espresso transition-all duration-200 active:scale-[0.97]">
+            Preview
+          </button>
+          <button
+            onClick={onUseTemplate}
+            className="px-3.5 py-1.5 rounded-full text-xs font-medium bg-espresso text-cream hover:bg-espresso-light transition-all duration-200 active:scale-[0.97]"
+          >
+            Use
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function TemplatesPage() {
-  const [search, setSearch] = useState('')
   const [selectedStyles, setSelectedStyles] = useState([])
   const [selectedPrice, setSelectedPrice] = useState('All')
   const [sortBy, setSortBy] = useState('Popular')
   const [filtersOpen, setFiltersOpen] = useState(false)
   const [displayCount, setDisplayCount] = useState(12)
+  const { user } = useAuth()
+  const { openAuthModal } = useAuthModal()
+  const navigate = useNavigate()
+
+  function handleUseTemplate(e) {
+    if (!user) {
+      e.preventDefault()
+      openAuthModal({ mode: 'login', redirectAfter: '/create' })
+    } else {
+      navigate('/create')
+    }
+  }
 
   const toggleStyle = (style) => {
     setSelectedStyles((prev) =>
@@ -38,42 +328,20 @@ export default function TemplatesPage() {
 
   const filtered = allTemplates
     .filter((t) => {
-      const matchSearch = t.name.toLowerCase().includes(search.toLowerCase())
       const matchStyle = selectedStyles.length === 0 || selectedStyles.includes(t.style)
       const matchPrice = selectedPrice === 'All' || t.price === selectedPrice
-      return matchSearch && matchStyle && matchPrice
+      return matchStyle && matchPrice
     })
     .slice(0, displayCount)
 
   return (
     <main className="pt-20 md:pt-24 min-h-screen">
-      {/* Hero bar */}
-      <div className="bg-espresso py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto text-center flex flex-col items-center gap-4">
-          <h1 className="font-display text-4xl md:text-6xl font-bold text-cream">All Templates</h1>
-          <p className="text-cream/50 text-lg max-w-xl">
-            50+ premium wedding invitation designs across every culture, style, and tradition.
-          </p>
-          {/* Search */}
-          <div className="relative w-full max-w-md mt-4">
-            <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-cream/30" />
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search templates..."
-              className="w-full rounded-full ring-1 ring-cream/20 bg-white/10 text-cream placeholder-cream/30 pl-12 pr-5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold transition-all duration-300"
-            />
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div className="flex gap-8">
           {/* Filter Sidebar (desktop) */}
-          <aside className="hidden lg:flex flex-col gap-8 w-56 flex-shrink-0">
+          <aside className="hidden lg:flex flex-col gap-8 w-52 flex-shrink-0">
             <div>
-              <h3 className="text-xs uppercase tracking-widest font-semibold text-espresso/40 mb-4">Style</h3>
+              <h3 className="text-[10px] uppercase tracking-widest font-semibold text-espresso/35 mb-4">Style</h3>
               <div className="flex flex-col gap-2.5">
                 {styles.map((style) => (
                   <label key={style} className="flex items-center gap-3 cursor-pointer group">
@@ -85,14 +353,14 @@ export default function TemplatesPage() {
                     >
                       {selectedStyles.includes(style) && <span className="text-[8px] text-white font-bold">✓</span>}
                     </div>
-                    <span className="text-sm text-espresso/70 group-hover:text-espresso transition-colors duration-200">{style}</span>
+                    <span className="text-sm text-espresso/65 group-hover:text-espresso transition-colors duration-200">{style}</span>
                   </label>
                 ))}
               </div>
             </div>
 
             <div>
-              <h3 className="text-xs uppercase tracking-widest font-semibold text-espresso/40 mb-4">Price</h3>
+              <h3 className="text-[10px] uppercase tracking-widest font-semibold text-espresso/35 mb-4">Price</h3>
               <div className="flex flex-col gap-2.5">
                 {['All', 'Free', 'Premium'].map((price) => (
                   <label key={price} className="flex items-center gap-3 cursor-pointer group">
@@ -104,7 +372,7 @@ export default function TemplatesPage() {
                     >
                       {selectedPrice === price && <div className="w-2 h-2 rounded-full bg-gold" />}
                     </div>
-                    <span className="text-sm text-espresso/70 group-hover:text-espresso transition-colors duration-200">{price}</span>
+                    <span className="text-sm text-espresso/65 group-hover:text-espresso transition-colors duration-200">{price}</span>
                   </label>
                 ))}
               </div>
@@ -115,9 +383,10 @@ export default function TemplatesPage() {
           <div className="flex-1 min-w-0">
             {/* Top bar */}
             <div className="flex items-center justify-between gap-4 mb-6 flex-wrap">
-              <p className="text-sm text-espresso/50">{filtered.length} templates found</p>
+              <p className="text-sm text-espresso/45">
+                {filtered.length} template{filtered.length !== 1 ? 's' : ''} found
+              </p>
               <div className="flex items-center gap-3">
-                {/* Mobile filter button */}
                 <button
                   onClick={() => setFiltersOpen(true)}
                   className="lg:hidden flex items-center gap-2 px-4 py-2 rounded-full ring-1 ring-espresso/15 text-sm text-espresso focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
@@ -125,7 +394,6 @@ export default function TemplatesPage() {
                   <SlidersHorizontal className="w-4 h-4" />
                   Filters
                 </button>
-                {/* Sort dropdown */}
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
@@ -139,58 +407,13 @@ export default function TemplatesPage() {
             </div>
 
             {/* Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {filtered.map((template) => (
-                <motion.div
+                <TemplateCard
                   key={template.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className={`relative overflow-hidden rounded-2xl ${template.bg} group`}
-                  style={{ minHeight: '240px' }}
-                  whileHover="hover"
-                >
-                  <div className="absolute inset-0 flex flex-col justify-between p-5">
-                    <div className="flex items-start justify-between">
-                      <span className="text-[9px] uppercase tracking-widest px-2 py-1 rounded-full bg-black/30 text-white/80 backdrop-blur-sm">
-                        {template.style}
-                      </span>
-                      <div className="flex flex-col items-end gap-1">
-                        <div className="flex items-center gap-1 bg-black/20 backdrop-blur-sm rounded-full px-2 py-1">
-                          <Star className="w-3 h-3 text-gold fill-gold" />
-                          <span className="text-[10px] text-white/80">{template.rating}</span>
-                        </div>
-                        <Badge variant={template.price === 'Free' ? 'sage' : 'gold'} className="text-[8px]">
-                          {template.price}
-                        </Badge>
-                      </div>
-                    </div>
-                    <div>
-                      <h3 className="font-display text-lg font-bold text-white">{template.name}</h3>
-                      <p className="text-xs text-white/50">{template.uses} couples</p>
-                    </div>
-                  </div>
-
-                  {/* Hover overlay */}
-                  <AnimatePresence>
-                    <motion.div
-                      variants={{
-                        rest: { opacity: 0, y: '100%' },
-                        hover: { opacity: 1, y: 0 },
-                      }}
-                      transition={{ duration: 0.35, ease: [0.32, 0.72, 0, 1] }}
-                      className="absolute inset-0 bg-espresso/75 backdrop-blur-sm flex flex-col items-center justify-center gap-3 p-6"
-                    >
-                      <button className="w-full py-2.5 bg-cream text-espresso text-xs font-semibold rounded-full hover:bg-gold transition-colors duration-300">
-                        Preview
-                      </button>
-                      <Link to="/create" className="w-full">
-                        <button className="w-full py-2.5 bg-gold text-espresso text-xs font-semibold rounded-full hover:bg-gold-light transition-colors duration-300">
-                          Use Template
-                        </button>
-                      </Link>
-                    </motion.div>
-                  </AnimatePresence>
-                </motion.div>
+                  template={template}
+                  onUseTemplate={handleUseTemplate}
+                />
               ))}
             </div>
 
@@ -201,7 +424,7 @@ export default function TemplatesPage() {
                   onClick={() => setDisplayCount((c) => c + 6)}
                   className="px-8 py-3 rounded-full ring-1 ring-espresso/20 text-sm font-medium text-espresso hover:bg-warm-100 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
                 >
-                  Load More
+                  Load more
                 </button>
               </div>
             )}
@@ -239,7 +462,7 @@ export default function TemplatesPage() {
               </div>
               <div className="flex flex-col gap-6">
                 <div>
-                  <h4 className="text-xs uppercase tracking-widest font-semibold text-espresso/40 mb-4">Style</h4>
+                  <h4 className="text-[10px] uppercase tracking-widest font-semibold text-espresso/35 mb-4">Style</h4>
                   <div className="flex flex-wrap gap-2">
                     {styles.map((style) => (
                       <button
@@ -255,7 +478,7 @@ export default function TemplatesPage() {
                   </div>
                 </div>
                 <div>
-                  <h4 className="text-xs uppercase tracking-widest font-semibold text-espresso/40 mb-4">Price</h4>
+                  <h4 className="text-[10px] uppercase tracking-widest font-semibold text-espresso/35 mb-4">Price</h4>
                   <div className="flex gap-2">
                     {['All', 'Free', 'Premium'].map((price) => (
                       <button
@@ -274,7 +497,7 @@ export default function TemplatesPage() {
                   onClick={() => setFiltersOpen(false)}
                   className="w-full py-3 bg-espresso text-cream rounded-full text-sm font-medium"
                 >
-                  Apply Filters
+                  Apply filters
                 </button>
               </div>
             </motion.div>

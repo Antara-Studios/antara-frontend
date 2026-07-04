@@ -7,6 +7,12 @@ import Home from './pages/Home'
 import TemplatesPage from './pages/TemplatesPage'
 import PricingPage from './pages/PricingPage'
 import CreatePage from './pages/CreatePage'
+import LoginPage from './pages/LoginPage'
+import RegisterPage from './pages/RegisterPage'
+import { AuthProvider } from './context/AuthContext'
+import { AuthModalProvider } from './context/AuthModalContext'
+import AuthModal from './components/auth/AuthModal'
+import ProtectedRoute from './components/auth/ProtectedRoute'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -32,11 +38,12 @@ function PageWrapper({ children }) {
 function AppContent() {
   const location = useLocation()
   const isCreatePage = location.pathname === '/create'
+  const isAuthPage = location.pathname === '/login' || location.pathname === '/register'
 
   return (
     <>
       <ScrollToTop />
-      {!isCreatePage && <Navbar />}
+      {!isCreatePage && !isAuthPage && <Navbar />}
 
       <AnimatePresence mode="wait">
         <Routes key={location.pathname} location={location}>
@@ -67,15 +74,36 @@ function AppContent() {
           <Route
             path="/create"
             element={
+              <ProtectedRoute>
+                <PageWrapper>
+                  <CreatePage />
+                </PageWrapper>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/login"
+            element={
               <PageWrapper>
-                <CreatePage />
+                <LoginPage />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <PageWrapper>
+                <RegisterPage />
               </PageWrapper>
             }
           />
         </Routes>
       </AnimatePresence>
 
-      {!isCreatePage && <Footer />}
+      {!isCreatePage && !isAuthPage && <Footer />}
+
+      {/* Global auth modal — rendered at root so it's available everywhere */}
+      <AuthModal />
     </>
   )
 }
@@ -83,7 +111,11 @@ function AppContent() {
 export default function App() {
   return (
     <BrowserRouter>
-      <AppContent />
+      <AuthProvider>
+        <AuthModalProvider>
+          <AppContent />
+        </AuthModalProvider>
+      </AuthProvider>
     </BrowserRouter>
   )
 }

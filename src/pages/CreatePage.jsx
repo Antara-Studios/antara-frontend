@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { ChevronLeft, ChevronRight, Star, Check, Upload, Copy, Share2 } from 'lucide-react'
 import Badge from '../components/ui/Badge'
+import { useAuth } from '../context/AuthContext'
+import { useAuthModal } from '../context/AuthModalContext'
 
 const TOTAL_STEPS = 5
 
@@ -39,6 +41,8 @@ const modules = [
 ]
 
 export default function CreatePage() {
+  const { user } = useAuth()
+  const { openAuthModal } = useAuthModal()
   const [step, setStep] = useState(1)
   const [saveStatus, setSaveStatus] = useState('saved')
   const [selectedTemplate, setSelectedTemplate] = useState(null)
@@ -76,6 +80,10 @@ export default function CreatePage() {
   }
 
   const handlePublish = () => {
+    if (!user) {
+      openAuthModal({ mode: 'login' })
+      return
+    }
     setToastVisible(true)
     setTimeout(() => setToastVisible(false), 4000)
   }

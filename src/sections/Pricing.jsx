@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Check, X } from 'lucide-react'
 import SectionLabel from '../components/ui/SectionLabel'
 import Badge from '../components/ui/Badge'
 import Button from '../components/ui/Button'
+import { useAuth } from '../context/AuthContext'
+import { useAuthModal } from '../context/AuthModalContext'
 
 const plans = [
   {
@@ -63,6 +65,18 @@ const plans = [
 
 function PricingCard({ plan, isAnnual }) {
   const price = isAnnual ? plan.annual : plan.monthly
+  const { user } = useAuth()
+  const { openAuthModal } = useAuthModal()
+  const navigate = useNavigate()
+
+  function handleCtaClick(e) {
+    if (!user) {
+      e.preventDefault()
+      openAuthModal({ mode: 'login', redirectAfter: '/create' })
+    } else {
+      navigate('/create')
+    }
+  }
 
   return (
     <div
@@ -101,7 +115,7 @@ function PricingCard({ plan, isAnnual }) {
         <span className={`text-sm ${plan.recommended ? 'text-cream/50' : 'text-espresso/40'}`}>/mo</span>
       </div>
 
-      <Link to="/create" className="block">
+      <Link to="/create" className="block" onClick={handleCtaClick}>
         <Button
           variant={plan.recommended ? 'secondary' : 'outline'}
           size="md"

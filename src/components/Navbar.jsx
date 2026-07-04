@@ -1,8 +1,11 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
+import { LogOut } from 'lucide-react'
 import Button from './ui/Button'
 import { fadeUpVariant, staggerContainer } from '../utils/animations'
+import { useAuth } from '../context/AuthContext'
+import { useAuthModal } from '../context/AuthModalContext'
 
 const navLinks = [
   { label: 'Home', to: '/' },
@@ -10,12 +13,73 @@ const navLinks = [
   { label: 'Pricing', to: '/pricing' },
 ]
 
+function UserChip({ user, onLogout }) {
+  const [open, setOpen] = useState(false)
+  const ref = useRef(null)
+
+  const initials = user.fullName
+    ? user.fullName.split(' ').map((w) => w[0]).join('').toUpperCase().slice(0, 2)
+    : '?'
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    function handleClick(e) {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false)
+    }
+    document.addEventListener('mousedown', handleClick)
+    return () => document.removeEventListener('mousedown', handleClick)
+  }, [])
+
+  return (
+    <div className="relative" ref={ref}>
+      <button
+        onClick={() => setOpen((v) => !v)}
+        aria-label="Account menu"
+        className="flex items-center gap-2 px-3 py-1.5 rounded-full ring-1 ring-espresso/15 hover:ring-gold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+      >
+        <div className="w-6 h-6 rounded-full bg-gold flex items-center justify-center">
+          <span className="text-[9px] font-bold text-espresso">{initials}</span>
+        </div>
+        <span className="text-xs font-medium text-espresso/80 max-w-[80px] truncate hidden sm:block">
+          {user.fullName}
+        </span>
+      </button>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: -4 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: -4 }}
+            transition={{ duration: 0.2, ease: [0.32, 0.72, 0, 1] }}
+            className="absolute right-0 top-full mt-2 w-48 bg-cream rounded-2xl ring-1 ring-espresso/10 shadow-lg shadow-espresso/10 overflow-hidden z-50"
+          >
+            <div className="px-4 py-3 border-b border-espresso/8">
+              <p className="text-xs font-semibold text-espresso truncate">{user.fullName}</p>
+              <p className="text-[10px] text-espresso/40 truncate mt-0.5">{user.phone}</p>
+            </div>
+            <button
+              onClick={() => { setOpen(false); onLogout() }}
+              className="w-full flex items-center gap-2.5 px-4 py-3 text-xs font-medium text-espresso/70 hover:text-espresso hover:bg-warm-100 transition-colors duration-200"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+              Log out
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  )
+}
+
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [hidden, setHidden] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const location = useLocation()
   const lastScrollY = useRef(0)
+  const { user, logout } = useAuth()
+  const { openAuthModal } = useAuthModal()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -44,6 +108,13 @@ export default function Navbar() {
     }
     return () => { document.body.style.overflow = '' }
   }, [menuOpen])
+
+  function handleCreateClick(e) {
+    if (!user) {
+      e.preventDefault()
+      openAuthModal({ mode: 'login', redirectAfter: '/create' })
+    }
+  }
 
   return (
     <>
@@ -81,11 +152,28 @@ export default function Navbar() {
           ))}
         </nav>
 
-        {/* Desktop CTA */}
-        <div className="hidden md:block">
-          <Link to="/create">
-            <Button size="sm" variant="primary">Create Invitation</Button>
-          </Link>
+        {/* Desktop CTA — auth-aware */}
+        <div className="hidden md:flex items-center gap-3">
+          {user ? (
+            <>
+              <Link to="/create">
+                <Button size="sm" variant="primary">Create Invitation</Button>
+              </Link>
+              <UserChip user={user} onLogout={logout} />
+            </>
+          ) : (
+            <>
+              <button
+                onClick={() => openAuthModal({ mode: 'login' })}
+                className="text-sm font-medium text-espresso/70 hover:text-espresso transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold rounded-sm"
+              >
+                Sign In
+              </button>
+              <Link to="/create" onClick={handleCreateClick}>
+                <Button size="sm" variant="primary">Create Invitation</Button>
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Mobile Hamburger */}
@@ -141,11 +229,41 @@ export default function Navbar() {
                   </Link>
                 </motion.div>
               ))}
-              <motion.div variants={fadeUpVariant}>
-                <Link to="/create" onClick={() => setMenuOpen(false)}>
-                  <Button size="lg" variant="primary">Create Invitation</Button>
-                </Link>
-              </motion.div>
+
+              {user ? (
+                <>
+                  <motion.div variants={fadeUpVariant}>
+                    <Link to="/create" onClick={() => setMenuOpen(false)}>
+                      <Button size="lg" variant="primary">Create Invitation</Button>
+                    </Link>
+                  </motion.div>
+                  <motion.div variants={fadeUpVariant}>
+                    <button
+                      onClick={() => { setMenuOpen(false); logout() }}
+                      className="flex items-center gap-2 text-sm font-medium text-espresso/60 hover:text-espresso transition-colors duration-300"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      Log out ({user.fullName})
+                    </button>
+                  </motion.div>
+                </>
+              ) : (
+                <>
+                  <motion.div variants={fadeUpVariant}>
+                    <button
+                      onClick={() => { setMenuOpen(false); openAuthModal({ mode: 'login' }) }}
+                      className="font-display text-2xl font-medium text-espresso/60 hover:text-gold transition-colors duration-300"
+                    >
+                      Sign In
+                    </button>
+                  </motion.div>
+                  <motion.div variants={fadeUpVariant}>
+                    <Link to="/create" onClick={(e) => { setMenuOpen(false); handleCreateClick(e) }}>
+                      <Button size="lg" variant="primary">Create Invitation</Button>
+                    </Link>
+                  </motion.div>
+                </>
+              )}
             </motion.nav>
           </motion.div>
         )}
