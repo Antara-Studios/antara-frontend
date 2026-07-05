@@ -130,7 +130,7 @@ export default function Navbar() {
         `}
       >
         {/* Logo */}
-        <Link to="/" className="flex items-baseline gap-1 flex-shrink-0">
+        <Link to="/" className="flex items-baseline gap-1 flex-shrink-0 -translate-y-0.5">
           <span className="font-display text-xl font-bold italic text-espresso">Antara</span>
           <span className="font-sans text-sm font-light text-espresso/60 tracking-wide">Studios</span>
         </Link>
