@@ -113,7 +113,7 @@ export default function Hero() {
           </motion.div>
 
           {/* Floating Invitation Card Mockup (desktop only) */}
-          <div className="hidden lg:flex justify-center items-center relative lg:self-center">
+          <div className="hidden lg:flex justify-center items-center relative lg:self-center lg:-mt-8">
             <motion.div
               animate={{ y: [0, -10, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
@@ -133,7 +133,7 @@ export default function Hero() {
                   {/* Gold border frame */}
                   <div className="absolute inset-4 border border-gold/30 rounded-[1.5rem] pointer-events-none" />
 
-                  <div className="flex flex-col items-center gap-4 relative z-10 pt-4">
+                  <div className="flex flex-col items-center text-center gap-4 relative z-10 pt-4">
                     <p className="text-[10px] uppercase tracking-[0.3em] text-gold font-medium">Together with their families</p>
                     <div className="flex flex-col items-center gap-1">
                       <h3 className="font-display text-2xl font-bold text-espresso">Priya</h3>
@@ -145,9 +145,6 @@ export default function Hero() {
                     <div className="flex flex-col items-center gap-1">
                       <p className="font-display text-sm font-semibold text-espresso">14th February 2025</p>
                       <p className="text-[11px] text-espresso/50">The Grand Leela Palace, Udaipur</p>
-                    </div>
-                    <div className="flex gap-2 mt-2">
-                      <span className="px-2 py-0.5 rounded-full bg-gold/10 text-gold text-[9px] uppercase tracking-widest">Hindu Ceremony</span>
                     </div>
                   </div>
                 </div>
