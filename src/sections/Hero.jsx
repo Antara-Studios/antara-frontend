@@ -11,10 +11,11 @@ const headline3 = ['Crafted', 'in', 'Minutes']
 export default function Hero() {
   return (
     <section
-      className="min-h-[100dvh] relative overflow-hidden flex items-center"
+      className="min-h-[100dvh] relative flex items-start sm:items-center lg:items-center"
       aria-label="Hero"
       style={{
         background: 'radial-gradient(ellipse 80% 60% at 50% 40%, #F5EFE6 0%, #FDFBF7 70%)',
+        overflow: 'clip',
       }}
     >
       {/* Grain overlay */}
@@ -33,14 +34,14 @@ export default function Hero() {
         <div className="absolute top-[15%] right-[35%] w-2 h-2 bg-gold/30 rounded-full animate-pulse-soft" style={{ animationDelay: '1.5s' }} />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pb-20 pt-24 sm:pt-28 md:pt-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pb-16 lg:pb-20 pt-24 sm:pt-28 md:pt-20 lg:pt-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           {/* Content */}
           <motion.div
             variants={staggerContainer}
             initial="hidden"
             animate="visible"
-            className="flex flex-col gap-6 sm:gap-8"
+            className="flex flex-col gap-4 sm:gap-6 lg:gap-6 lg:-mt-16"
           >
             {/* Headline */}
             <div className="flex flex-col gap-1">
@@ -51,7 +52,8 @@ export default function Hero() {
                     key={word}
                     variants={fadeUpVariant}
                     custom={i}
-                    className="font-display text-[2.75rem] xs:text-5xl sm:text-6xl md:text-8xl font-bold text-espresso leading-none"
+                    className="font-display font-bold text-espresso leading-none text-[2.75rem] xs:text-5xl sm:text-6xl"
+                    style={{ fontSize: 'clamp(2.75rem, 6vw, 5rem)' }}
                   >
                     {word}
                   </motion.span>
@@ -60,7 +62,7 @@ export default function Hero() {
 
               {/* Line 2: Invitations (italic gold) */}
               <motion.div variants={fadeUpVariant} className="overflow-hidden">
-                <span className="font-display text-[2.75rem] xs:text-5xl sm:text-6xl md:text-8xl font-bold italic text-gold leading-none">
+                <span className="font-display font-bold italic text-gold leading-none" style={{ fontSize: 'clamp(2.75rem, 6vw, 5rem)' }}>
                   {headline2}
                 </span>
               </motion.div>
@@ -73,7 +75,8 @@ export default function Hero() {
                       key={word + i}
                       variants={fadeUpVariant}
                       custom={i + 3}
-                      className="font-display text-xl sm:text-3xl md:text-4xl font-normal text-espresso/70 leading-none"
+                      className="font-display font-normal text-espresso/70 leading-none"
+                      style={{ fontSize: 'clamp(1.25rem, 2.5vw, 2rem)' }}
                     >
                       {word}
                     </motion.span>
@@ -101,7 +104,7 @@ export default function Hero() {
             </div>
 
             {/* CTA Buttons — stack vertically on mobile */}
-            <motion.div variants={fadeUpVariant} custom={4} className="flex flex-col xs:flex-row gap-3 mt-2 sm:mt-4">
+            <motion.div variants={fadeUpVariant} custom={4} className="flex flex-col xs:flex-row gap-3 mt-2 sm:mt-3 lg:mt-2">
               <Link to="/templates" className="w-full xs:w-auto">
                 <Button size="md" variant="primary" className="w-full xs:w-auto sm:!px-8 sm:!py-4 sm:!text-base">Explore Templates</Button>
               </Link>
@@ -110,7 +113,7 @@ export default function Hero() {
           </motion.div>
 
           {/* Floating Invitation Card Mockup (desktop only) */}
-          <div className="hidden lg:flex justify-center items-center relative">
+          <div className="hidden lg:flex justify-center items-center relative lg:self-center">
             <motion.div
               animate={{ y: [0, -10, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
