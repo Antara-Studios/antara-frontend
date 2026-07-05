@@ -30,6 +30,53 @@ export function AuthProvider({ children }) {
     setError(null)
   }
 
+  // ─── Error message mapper ────────────────────────────────────────────────────
+
+  function friendlyError(err) {
+    const code = err?.code || ''
+
+    // Firebase error codes → plain English
+    const firebaseMap = {
+      'auth/invalid-phone-number':       'Please enter a valid 10-digit phone number (e.g. +91 98765 43210).',
+      'auth/too-many-requests':          'Too many attempts. Please wait a few minutes and try again.',
+      'auth/invalid-verification-code':  'Incorrect OTP. Please check the code and try again.',
+      'auth/code-expired':               'OTP has expired. Please request a new one.',
+      'auth/missing-phone-number':       'Phone number is required.',
+      'auth/quota-exceeded':             'SMS limit reached. Please try again later.',
+      'auth/user-disabled':              'This account has been disabled. Please contact support.',
+      'auth/network-request-failed':     'Network error. Please check your connection and try again.',
+      'auth/captcha-check-failed':       'Security check failed. Please refresh the page and try again.',
+      'auth/missing-verification-code':  'Please enter the OTP sent to your phone.',
+    }
+    if (firebaseMap[code]) return firebaseMap[code]
+
+    // Backend HTTP errors — map status codes to helpful messages
+    const status = err?.status
+    const backendMsg = err?.message
+    if (status === 401) return backendMsg || 'Incorrect phone number or password. Please try again.'
+    if (status === 404) return 'No account found with this phone number. Please register first.'
+    if (status === 409) return 'An account with this phone number already exists. Please sign in instead.'
+    if (status === 400) return backendMsg || 'Please check your details and try again.'
+    if (status >= 500)  return 'Server error. Please try again in a moment.'
+
+    // Pass through any other message as-is
+    return backendMsg || 'Something went wrong. Please try again.'
+  }
+
+  // ─── Phone number normaliser ─────────────────────────────────────────────────
+
+  function normalisePhone(raw) {
+    // Strip all spaces and dashes
+    const digits = raw.replace(/[\s\-]/g, '')
+    // Already has + prefix — return as-is
+    if (digits.startsWith('+')) return digits
+    // 10-digit Indian number — prepend +91
+    if (/^\d{10}$/.test(digits)) return `+91${digits}`
+    // Has country code without + (e.g. 919876543210)
+    if (/^\d{12}$/.test(digits)) return `+${digits}`
+    return digits
+  }
+
   // ─── Firebase reCAPTCHA / OTP helpers ───────────────────────────────────────
 
   function getOrCreateRecaptcha() {
@@ -47,13 +94,16 @@ export function AuthProvider({ children }) {
       try { window._recaptchaVerifier.clear() } catch {}
       window._recaptchaVerifier = null
     }
+    // Reset the container so Firebase can render a fresh reCAPTCHA next time
+    const container = document.getElementById('recaptcha-container')
+    if (container) container.innerHTML = ''
   }
 
   async function sendFirebaseOtp(phone) {
     clearRecaptcha()
     const recaptcha = getOrCreateRecaptcha()
     const provider = new PhoneAuthProvider(firebaseAuth)
-    const verificationId = await provider.verifyPhoneNumber(phone, recaptcha)
+    const verificationId = await provider.verifyPhoneNumber(normalisePhone(phone), recaptcha)
     setVerificationId(verificationId)
     return verificationId
   }
@@ -86,8 +136,7 @@ export function AuthProvider({ children }) {
 
       return { success: true }
     } catch (err) {
-      const msg = err.message || 'Failed to sign in. Please check your credentials.'
-      setError(msg)
+      setError(friendlyError(err))
       return { success: false }
     } finally {
       setLoading(false)
@@ -116,8 +165,7 @@ export function AuthProvider({ children }) {
       clearRecaptcha()
       return { success: true }
     } catch (err) {
-      const msg = err.message || 'OTP verification failed. Please try again.'
-      setError(msg)
+      setError(friendlyError(err))
       return { success: false }
     } finally {
       setLoading(false)
@@ -135,8 +183,7 @@ export function AuthProvider({ children }) {
       await sendFirebaseOtp(phone)
       return { success: true }
     } catch (err) {
-      const msg = err.message || 'Failed to send OTP. Please try again.'
-      setError(msg)
+      setError(friendlyError(err))
       return { success: false }
     } finally {
       setLoading(false)
@@ -158,8 +205,7 @@ export function AuthProvider({ children }) {
 
       return { success: true }
     } catch (err) {
-      const msg = err.message || 'OTP verification failed. Please try again.'
-      setError(msg)
+      setError(friendlyError(err))
       return { success: false }
     } finally {
       setLoading(false)
@@ -198,8 +244,7 @@ export function AuthProvider({ children }) {
 
       return { success: true }
     } catch (err) {
-      const msg = err.message || 'Registration failed. Please try again.'
-      setError(msg)
+      setError(friendlyError(err))
       return { success: false }
     } finally {
       setLoading(false)
