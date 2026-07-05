@@ -1,8 +1,4 @@
-import {
-  ClipboardList, Timer, MapPin, Music, Image, QrCode,
-  MessageCircle, Globe, Gift, Shirt, Hotel, Calendar,
-  Users, Lock, BarChart2,
-} from 'lucide-react'
+import { MapPin, Music, QrCode, MessageCircle, Globe, Gift, Calendar, Image } from 'lucide-react'
 import SectionLabel from '../components/ui/SectionLabel'
 
 
@@ -13,12 +9,7 @@ const smallFeatures = [
   { icon: MessageCircle, name: 'WhatsApp Sharing', desc: 'One-tap invite forwarding' },
   { icon: Globe, name: 'Multilingual', desc: 'Invitations in 10+ languages' },
   { icon: Gift, name: 'Gift Registry', desc: 'Curated wishlist integration' },
-  { icon: Shirt, name: 'Dress Code', desc: 'Visual attire guidance' },
-  { icon: Hotel, name: 'Accommodation', desc: 'Hotel suggestions for guests' },
   { icon: Calendar, name: 'Event Schedule', desc: 'Full ceremony timeline' },
-  { icon: Users, name: 'Family Introductions', desc: 'Meet both families section' },
-  { icon: Lock, name: 'Password Protection', desc: 'Private invitations only' },
-  { icon: BarChart2, name: 'Analytics', desc: 'Track opens and RSVPs' },
 ]
 
 export default function Features() {
@@ -36,9 +27,6 @@ export default function Features() {
           {/* RSVP Management — Large (col-span-2, row-span-2) */}
           <div className="lg:col-span-2 lg:row-span-2 bg-gradient-to-br from-warm-200 to-champagne ring-1 ring-espresso/8 p-1.5 rounded-[1.5rem] sm:rounded-[2rem]">
             <div className="bg-cream/80 rounded-[calc(1.5rem-6px)] sm:rounded-[calc(2rem-6px)] h-full p-4 sm:p-6 flex flex-col gap-4 sm:gap-5">
-              <div className="w-10 h-10 rounded-xl bg-gold/15 flex items-center justify-center">
-                <ClipboardList className="w-5 h-5 text-gold" strokeWidth={1.5} />
-              </div>
               <div>
                 <h3 className="font-semibold text-espresso text-lg">RSVP Management</h3>
                 <p className="text-sm text-espresso/60 mt-1 leading-relaxed">Real-time guest responses with meal preferences, dietary restrictions, and headcount tracking.</p>
@@ -70,9 +58,6 @@ export default function Features() {
           {/* Countdown Timer — Medium (col-span-2) */}
           <div className="lg:col-span-2 bg-gradient-to-br from-espresso to-espresso-light ring-1 ring-white/5 p-1.5 rounded-[1.5rem] sm:rounded-[2rem]">
             <div className="rounded-[calc(1.5rem-6px)] sm:rounded-[calc(2rem-6px)] h-full p-4 sm:p-6 flex flex-col gap-3 sm:gap-4">
-              <div className="w-10 h-10 rounded-xl bg-gold/20 flex items-center justify-center">
-                <Timer className="w-5 h-5 text-gold" strokeWidth={1.5} />
-              </div>
               <h3 className="font-semibold text-cream text-base">Countdown Timer</h3>
               <div className="flex items-center gap-3">
                 {['32', '14', '08', '45'].map((val, i) => (
@@ -92,9 +77,6 @@ export default function Features() {
           {/* Venue Map — Medium (col-span-2) */}
           <div className="lg:col-span-2 bg-gradient-to-br from-sage/20 to-warm-100 ring-1 ring-espresso/8 p-1.5 rounded-[1.5rem] sm:rounded-[2rem]">
             <div className="bg-cream/60 rounded-[calc(1.5rem-6px)] sm:rounded-[calc(2rem-6px)] h-full p-4 sm:p-6 flex flex-col gap-4">
-              <div className="w-10 h-10 rounded-xl bg-sage/15 flex items-center justify-center">
-                <MapPin className="w-5 h-5 text-sage" strokeWidth={1.5} />
-              </div>
               <h3 className="font-semibold text-espresso text-base">Venue Map & Directions</h3>
               <div className="flex-1 rounded-xl bg-sage/10 border border-sage/20 p-4 flex flex-col gap-2">
                 <div className="flex items-start gap-2">
@@ -116,11 +98,13 @@ export default function Features() {
           <div className="col-span-1 md:col-span-2 lg:col-span-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
             {smallFeatures.map(({ icon: Icon, name, desc }) => (
               <div key={name} className="bg-warm-100/60 ring-1 ring-espresso/8 p-1 sm:p-1.5 rounded-[1.25rem] sm:rounded-[1.5rem]">
-                <div className="bg-cream shadow-[inset_0_1px_1px_rgba(255,255,255,0.6)] rounded-[calc(1.25rem-4px)] sm:rounded-[calc(1.5rem-6px)] h-full p-3 sm:p-4 flex flex-col gap-2 sm:gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-espresso/5 flex items-center justify-center">
-                    <Icon className="w-4 h-4 text-espresso/50" strokeWidth={1.5} />
-                  </div>
-                  <div>
+                <div className="bg-cream shadow-[inset_0_1px_1px_rgba(255,255,255,0.6)] rounded-[calc(1.25rem-4px)] sm:rounded-[calc(1.5rem-6px)] h-full p-3 sm:p-4 flex flex-col gap-2 sm:gap-3 relative overflow-hidden">
+                  {/* Faded large icon peeking from bottom-right */}
+                  <Icon
+                    className="absolute -bottom-3 -right-3 w-16 h-16 text-espresso/[0.13]"
+                    strokeWidth={1}
+                  />
+                  <div className="relative z-10">
                     <h4 className="text-sm font-semibold text-espresso">{name}</h4>
                     <p className="text-[11px] text-espresso/50 mt-0.5 leading-relaxed">{desc}</p>
                   </div>
