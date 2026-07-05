@@ -1,7 +1,6 @@
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { Star } from 'lucide-react'
 import SectionLabel from '../components/ui/SectionLabel'
 import Button from '../components/ui/Button'
 
@@ -67,53 +66,40 @@ const templates = [
 
 function TemplateCard({ template }) {
   return (
-    <motion.div
-      className={`relative overflow-hidden rounded-2xl ${template.bg} group ${template.span} h-full`}
-      style={{ minHeight: '200px' }}
-      whileHover="hover"
-      initial="rest"
-    >
-      {/* Content */}
-      <div className="absolute inset-0 flex flex-col justify-between p-5">
-        {/* Top: Style badge + rating */}
-        <div className="flex items-start justify-between">
-          <span className="text-[9px] uppercase tracking-widest px-2 py-1 rounded-full bg-black/30 text-white/80 backdrop-blur-sm">
-            {template.style}
-          </span>
-          <div className="flex items-center gap-1 bg-black/20 backdrop-blur-sm rounded-full px-2 py-1">
-            <Star className="w-3 h-3 text-gold fill-gold" />
-            <span className="text-[10px] text-white/80">{template.rating}</span>
+    <div>
+      {/* Card visual */}
+      <motion.div
+        className={`relative overflow-hidden rounded-2xl ${template.bg}`}
+        style={{ minHeight: '200px' }}
+      >
+        <div className="absolute inset-0 flex flex-col justify-between p-5">
+          {/* Top: Style badge */}
+          <div className="flex items-start justify-between">
+            <span className="text-[9px] uppercase tracking-widest px-2 py-1 rounded-full bg-black/30 text-white/80 backdrop-blur-sm">
+              {template.style}
+            </span>
+          </div>
+
+          {/* Bottom: Name + uses */}
+          <div>
+            <h3 className="font-display text-xl font-bold text-white">{template.name}</h3>
+            <p className="text-xs text-white/50 mt-0.5">{template.uses} couples</p>
           </div>
         </div>
+      </motion.div>
 
-        {/* Bottom: Name + uses */}
-        <div>
-          <h3 className="font-display text-xl font-bold text-white">{template.name}</h3>
-          <p className="text-xs text-white/50 mt-0.5">{template.uses} couples</p>
-        </div>
-      </div>
-
-      {/* Hover overlay */}
-      <AnimatePresence>
-        <motion.div
-          variants={{
-            rest: { opacity: 0, y: '100%' },
-            hover: { opacity: 1, y: 0 },
-          }}
-          transition={{ duration: 0.35, ease: [0.32, 0.72, 0, 1] }}
-          className="absolute inset-0 bg-espresso/70 backdrop-blur-sm flex flex-col items-center justify-center gap-3 p-6"
-        >
-          <button className="w-full py-2.5 bg-cream text-espresso text-xs font-semibold rounded-full hover:bg-gold transition-colors duration-300">
-            Preview
+      {/* Actions — below the card */}
+      <div className="flex items-center gap-2 mt-3">
+        <button className="flex-1 py-2 rounded-full text-xs font-medium ring-1 ring-espresso/15 text-espresso/70 hover:ring-espresso/30 hover:text-espresso transition-all duration-200 active:scale-[0.97]">
+          Preview
+        </button>
+        <Link to="/create" className="flex-1">
+          <button className="w-full py-2 rounded-full text-xs font-medium bg-espresso text-cream hover:bg-espresso-light transition-all duration-200 active:scale-[0.97]">
+            Use Template
           </button>
-          <Link to="/create" className="w-full">
-            <button className="w-full py-2.5 bg-gold text-espresso text-xs font-semibold rounded-full hover:bg-gold-light transition-colors duration-300">
-              Use Template
-            </button>
-          </Link>
-        </motion.div>
-      </AnimatePresence>
-    </motion.div>
+        </Link>
+      </div>
+    </div>
   )
 }
 
@@ -153,17 +139,21 @@ export default function Templates() {
           ))}
         </div>
 
-        {/* Mobile: horizontal swipe strip — hidden on md+ */}
-        <div className="md:hidden overflow-x-auto snap-x snap-mandatory hide-scrollbar scroll-touch pb-2" style={{ marginLeft: '-1rem', marginRight: '-1rem', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}>
-          <div className="flex gap-3">
-          {filtered.map((template) => (
-            <div
-              key={template.id}
-              className="flex-shrink-0 snap-start w-[72vw] xs:w-[65vw] h-56"
-            >
-              <TemplateCard template={template} />
-            </div>
-          ))}
+        {/* Mobile: centered snap carousel — hidden on md+ */}
+        <div
+          className="md:hidden overflow-x-auto snap-x snap-mandatory hide-scrollbar scroll-touch pb-2"
+          style={{ marginLeft: '-1rem', marginRight: '-1rem' }}
+        >
+          <div className="flex" style={{ paddingLeft: 'calc(50vw - 40vw / 2)', paddingRight: 'calc(50vw - 40vw / 2)' }}>
+            {filtered.map((template) => (
+              <div
+                key={template.id}
+                className="flex-shrink-0 snap-center mx-2"
+                style={{ width: '80vw' }}
+              >
+                <TemplateCard template={template} />
+              </div>
+            ))}
           </div>
         </div>
 
