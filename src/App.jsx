@@ -9,6 +9,7 @@ import PricingPage from './pages/PricingPage'
 import CreatePage from './pages/CreatePage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
+import DashboardPage from './pages/DashboardPage'
 import { AuthProvider } from './context/AuthContext'
 import { AuthModalProvider } from './context/AuthModalContext'
 import AuthModal from './components/auth/AuthModal'
@@ -95,6 +96,16 @@ function AppContent() {
               <PageWrapper>
                 <RegisterPage />
               </PageWrapper>
+            }
+          />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <PageWrapper>
+                  <DashboardPage />
+                </PageWrapper>
+              </ProtectedRoute>
             }
           />
         </Routes>

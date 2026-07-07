@@ -30,7 +30,12 @@ export default function AuthModal() {
   function handleSuccess() {
     closeAuthModal()
     if (redirectAfter) {
-      navigate(redirectAfter)
+      if (typeof redirectAfter === 'string') {
+        navigate(redirectAfter)
+      } else {
+        // redirectAfter = { path: '/create', state: { preselectedTemplateId: 3 } }
+        navigate(redirectAfter.path, { state: redirectAfter.state })
+      }
     }
   }
 

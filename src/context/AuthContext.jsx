@@ -6,7 +6,7 @@ import {
   signInWithPopup,
 } from 'firebase/auth'
 import { firebaseAuth, googleProvider } from '../utils/firebase'
-import { api } from '../utils/api'
+import { api, setAccessToken, clearAccessToken } from '../utils/api'
 
 const AuthContext = createContext(null)
 
@@ -122,9 +122,12 @@ export function AuthProvider({ children }) {
     setLoading(true)
     setError(null)
     try {
-      // Validate credentials against backend — sets httpOnly cookies on success
+      // Validate credentials against backend
       const data = await api.post('/auth/login', { phone, password })
       const loggedInUser = data.data.user
+
+      // Store access token in memory for Bearer auth
+      if (data.data.accessToken) setAccessToken(data.data.accessToken)
 
       localStorage.setItem('antara_user', JSON.stringify(loggedInUser))
       setUser(loggedInUser)
@@ -230,9 +233,12 @@ export function AuthProvider({ children }) {
         await api.post('/auth/phone', { idToken })
       }
 
-      // Auto-login to get JWT cookies set
+      // Auto-login to get access token
       const loginData = await api.post('/auth/login', { phone, password })
       const newUser = { ...loginData.data.user, phoneVerified: !!idToken }
+
+      // Store access token in memory for Bearer auth
+      if (loginData.data.accessToken) setAccessToken(loginData.data.accessToken)
 
       localStorage.setItem('antara_user', JSON.stringify(newUser))
       setUser(newUser)
@@ -260,6 +266,10 @@ export function AuthProvider({ children }) {
       const idToken = await result.user.getIdToken()
       const data = await api.post('/auth/google', { idToken })
       const googleUser = data.data.user
+
+      // Store access token in memory for Bearer auth
+      if (data.data.accessToken) setAccessToken(data.data.accessToken)
+
       localStorage.setItem('antara_user', JSON.stringify(googleUser))
       setUser(googleUser)
       return { success: true, isNewUser: data.data.isNewUser }
@@ -277,6 +287,7 @@ export function AuthProvider({ children }) {
   // ─── LOGOUT ─────────────────────────────────────────────────────────────────
 
   async function logout() {
+    clearAccessToken()
     try {
       await api.post('/auth/logout')
     } catch {

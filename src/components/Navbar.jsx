@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { LogOut } from 'lucide-react'
+import { LogOut, LayoutGrid } from 'lucide-react'
 import Button from './ui/Button'
 import { fadeUpVariant, staggerContainer } from '../utils/animations'
 import { useAuth } from '../context/AuthContext'
@@ -58,6 +58,14 @@ function UserChip({ user, onLogout }) {
               <p className="text-xs font-semibold text-espresso truncate">{user.fullName}</p>
               <p className="text-[10px] text-espresso/40 truncate mt-0.5">{user.phone}</p>
             </div>
+            <Link
+              to="/dashboard"
+              onClick={() => setOpen(false)}
+              className="w-full flex items-center gap-2.5 px-4 py-3 text-xs font-medium text-espresso/70 hover:text-espresso hover:bg-warm-100 transition-colors duration-200"
+            >
+              <LayoutGrid className="w-3.5 h-3.5" />
+              My Dashboard
+            </Link>
             <button
               onClick={() => { setOpen(false); onLogout() }}
               className="w-full flex items-center gap-2.5 px-4 py-3 text-xs font-medium text-espresso/70 hover:text-espresso hover:bg-warm-100 transition-colors duration-200"
@@ -235,6 +243,16 @@ export default function Navbar() {
                   <motion.div variants={fadeUpVariant}>
                     <Link to="/create" onClick={() => setMenuOpen(false)}>
                       <Button size="lg" variant="primary">Create Invitation</Button>
+                    </Link>
+                  </motion.div>
+                  <motion.div variants={fadeUpVariant}>
+                    <Link
+                      to="/dashboard"
+                      onClick={() => setMenuOpen(false)}
+                      className="flex items-center gap-2 text-sm font-medium text-espresso/60 hover:text-espresso transition-colors duration-300"
+                    >
+                      <LayoutGrid className="w-4 h-4" />
+                      My Dashboard
                     </Link>
                   </motion.div>
                   <motion.div variants={fadeUpVariant}>

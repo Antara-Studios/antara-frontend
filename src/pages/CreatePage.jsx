@@ -1,10 +1,13 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Link } from 'react-router-dom'
-import { ChevronLeft, ChevronRight, Star, Check, Upload, Copy, Share2 } from 'lucide-react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { ChevronLeft, ChevronRight, Check, Upload, Copy, Share2, Lock } from 'lucide-react'
 import Badge from '../components/ui/Badge'
 import { useAuth } from '../context/AuthContext'
 import { useAuthModal } from '../context/AuthModalContext'
+import { usePurchases } from '../hooks/usePurchases'
+import { isPaidTemplate, getTemplatePrice, TEMPLATE_PRICES } from '../data/templatePricing'
+import PaymentModal from '../components/PaymentModal'
 
 const TOTAL_STEPS = 5
 
@@ -43,9 +46,13 @@ const modules = [
 export default function CreatePage() {
   const { user } = useAuth()
   const { openAuthModal } = useAuthModal()
+  const location = useLocation()
+  const navigate = useNavigate()
+  const { hasAccess, refetch } = usePurchases()
   const [step, setStep] = useState(1)
   const [saveStatus, setSaveStatus] = useState('saved')
   const [selectedTemplate, setSelectedTemplate] = useState(null)
+  const [paymentTarget, setPaymentTarget] = useState(null)
   const [selectedPalette, setSelectedPalette] = useState(1)
   const [selectedFont, setSelectedFont] = useState(1)
   const [enabledModules, setEnabledModules] = useState({ rsvp: true, countdown: false, music: false, map: true, gallery: false })
@@ -69,6 +76,23 @@ export default function CreatePage() {
     saveTimerRef.current = setTimeout(() => setSaveStatus('saved'), 1500)
     return () => clearTimeout(saveTimerRef.current)
   }, [formData, selectedTemplate, selectedPalette, selectedFont, enabledModules])
+
+  // Pre-select template from navigation state (e.g. from TemplatesPage "Use Template")
+  useEffect(() => {
+    const preselectedId = location.state?.preselectedTemplateId
+    if (!preselectedId) return
+    const tmpl = templates.find((t) => t.id === preselectedId)
+    if (!tmpl) return
+    if (isPaidTemplate(preselectedId) && !hasAccess(preselectedId)) {
+      setPaymentTarget({
+        templateId: preselectedId,
+        templateName: tmpl.name,
+        price: getTemplatePrice(preselectedId),
+      })
+    } else {
+      setSelectedTemplate(preselectedId)
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const isStep1Valid = selectedTemplate !== null
   const isStep2Valid = formData.brideName && formData.groomName && formData.weddingDate && formData.venueName && formData.venueCity
@@ -155,27 +179,62 @@ export default function CreatePage() {
                 <p className="text-espresso/50 mt-2">Select a design that speaks to your love story.</p>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {templates.map((template) => (
-                  <button
-                    key={template.id}
-                    onClick={() => setSelectedTemplate(template.id)}
-                    className={`
-                      relative overflow-hidden rounded-2xl ${template.bg} h-48 text-left
-                      transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold
-                      ${selectedTemplate === template.id ? 'ring-2 ring-gold scale-[1.02]' : 'hover:scale-[1.01]'}
-                    `}
-                  >
-                    {selectedTemplate === template.id && (
-                      <div className="absolute top-3 right-3 w-7 h-7 rounded-full bg-gold flex items-center justify-center">
-                        <Check className="w-3.5 h-3.5 text-espresso" strokeWidth={2.5} />
+                {templates.map((template) => {
+                  const paid = isPaidTemplate(template.id)
+                  const owned = hasAccess(template.id)
+                  const price = getTemplatePrice(template.id)
+                  return (
+                    <button
+                      key={template.id}
+                      onClick={() => {
+                        if (paid && !owned) {
+                          setPaymentTarget({
+                            templateId: template.id,
+                            templateName: template.name,
+                            price,
+                          })
+                        } else {
+                          setSelectedTemplate(template.id)
+                        }
+                      }}
+                      className={`
+                        relative overflow-hidden rounded-2xl ${template.bg} h-48 text-left
+                        transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold
+                        ${selectedTemplate === template.id ? 'ring-2 ring-gold scale-[1.02]' : 'hover:scale-[1.01]'}
+                      `}
+                    >
+                      {/* Price / Owned badge — top left */}
+                      <div className="absolute top-3 left-3">
+                        {owned ? (
+                          <span className="text-[9px] px-2 py-1 rounded-full bg-sage/80 text-white backdrop-blur-sm font-medium">
+                            Owned
+                          </span>
+                        ) : paid ? (
+                          <span className="text-[9px] px-2 py-1 rounded-full bg-black/40 text-white/90 backdrop-blur-sm font-medium flex items-center gap-1">
+                            <Lock className="w-2.5 h-2.5" />
+                            ₹{price.toLocaleString('en-IN')}
+                          </span>
+                        ) : (
+                          <span className="text-[9px] px-2 py-1 rounded-full bg-black/30 text-white/80 backdrop-blur-sm font-medium">
+                            Free
+                          </span>
+                        )}
                       </div>
-                    )}
-                    <div className="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-black/50 to-transparent">
-                      <p className="font-display text-base font-bold text-white">{template.name}</p>
-                      <Badge variant="glass" className="mt-1">{template.style}</Badge>
-                    </div>
-                  </button>
-                ))}
+
+                      {/* Selected check — top right */}
+                      {selectedTemplate === template.id && (
+                        <div className="absolute top-3 right-3 w-7 h-7 rounded-full bg-gold flex items-center justify-center">
+                          <Check className="w-3.5 h-3.5 text-espresso" strokeWidth={2.5} />
+                        </div>
+                      )}
+
+                      <div className="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-black/50 to-transparent">
+                        <p className="font-display text-base font-bold text-white">{template.name}</p>
+                        <Badge variant="glass" className="mt-1">{template.style}</Badge>
+                      </div>
+                    </button>
+                  )
+                })}
               </div>
             </motion.div>
           )}
@@ -488,6 +547,30 @@ export default function CreatePage() {
           </button>
         )}
       </div>
+
+      {/* Payment modal */}
+      {paymentTarget && (
+        <PaymentModal
+          templateId={paymentTarget.templateId}
+          templateName={paymentTarget.templateName}
+          price={paymentTarget.price}
+          onSuccess={() => {
+            refetch()
+            setSelectedTemplate(paymentTarget.templateId)
+            setPaymentTarget(null)
+          }}
+          onClose={() => {
+            setPaymentTarget(null)
+            // If no template was previously selected, nothing to do here — go back
+            if (selectedTemplate === null) navigate(-1)
+          }}
+          onDismiss={() => {
+            setPaymentTarget(null)
+            // Razorpay popup closed without payment — go back if no template selected
+            if (selectedTemplate === null) navigate(-1)
+          }}
+        />
+      )}
 
       {/* Success toast */}
       <AnimatePresence>

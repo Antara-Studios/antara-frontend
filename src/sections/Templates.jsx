@@ -1,8 +1,11 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import SectionLabel from '../components/ui/SectionLabel'
 import Button from '../components/ui/Button'
+import { useAuth } from '../context/AuthContext'
+import { useAuthModal } from '../context/AuthModalContext'
+import { getTemplatePrice } from '../data/templatePricing'
 
 const filters = ['All', 'Hindu', 'Christian', 'Muslim', 'South Indian', 'Modern', 'Destination']
 
@@ -64,7 +67,8 @@ const templates = [
   },
 ]
 
-function TemplateCard({ template }) {
+function TemplateCard({ template, onUseTemplate }) {
+  const price = getTemplatePrice(template.id)
   return (
     <div>
       {/* Card visual */}
@@ -73,10 +77,13 @@ function TemplateCard({ template }) {
         style={{ minHeight: '200px' }}
       >
         <div className="absolute inset-0 flex flex-col justify-between p-5">
-          {/* Top: Style badge */}
+          {/* Top: Style + price badges */}
           <div className="flex items-start justify-between">
             <span className="text-[9px] uppercase tracking-widest px-2 py-1 rounded-full bg-black/30 text-white/80 backdrop-blur-sm">
               {template.style}
+            </span>
+            <span className="text-[9px] px-2 py-1 rounded-full bg-black/30 text-white/80 backdrop-blur-sm font-medium">
+              {price === 0 ? 'Free' : `₹${price.toLocaleString('en-IN')}`}
             </span>
           </div>
 
@@ -93,11 +100,12 @@ function TemplateCard({ template }) {
         <button className="flex-1 py-2 rounded-full text-xs font-medium ring-1 ring-espresso/15 text-espresso/70 hover:ring-espresso/30 hover:text-espresso transition-all duration-200 active:scale-[0.97]">
           Preview
         </button>
-        <Link to="/create" className="flex-1">
-          <button className="w-full py-2 rounded-full text-xs font-medium bg-espresso text-cream hover:bg-espresso-light transition-all duration-200 active:scale-[0.97]">
-            Use Template
-          </button>
-        </Link>
+        <button
+          onClick={onUseTemplate}
+          className="flex-1 py-2 rounded-full text-xs font-medium bg-espresso text-cream hover:bg-espresso-light transition-all duration-200 active:scale-[0.97]"
+        >
+          Use Template
+        </button>
       </div>
     </div>
   )
@@ -105,10 +113,24 @@ function TemplateCard({ template }) {
 
 export default function Templates() {
   const [activeFilter, setActiveFilter] = useState('All')
+  const { user } = useAuth()
+  const { openAuthModal } = useAuthModal()
+  const navigate = useNavigate()
 
   const filtered = activeFilter === 'All'
     ? templates
     : templates.filter((t) => t.style === activeFilter)
+
+  function handleUseTemplate(template) {
+    if (!user) {
+      openAuthModal({
+        mode: 'login',
+        redirectAfter: { path: '/create', state: { preselectedTemplateId: template.id } },
+      })
+    } else {
+      navigate('/create', { state: { preselectedTemplateId: template.id } })
+    }
+  }
 
   return (
     <section className="py-16 sm:py-24 lg:py-32" aria-label="Templates">
@@ -151,7 +173,7 @@ export default function Templates() {
                 className="flex-shrink-0 snap-center mx-2"
                 style={{ width: '80vw' }}
               >
-                <TemplateCard template={template} />
+                <TemplateCard template={template} onUseTemplate={() => handleUseTemplate(template)} />
               </div>
             ))}
           </div>
@@ -160,7 +182,7 @@ export default function Templates() {
         {/* Desktop: Bento Grid — hidden on mobile */}
         <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filtered.map((template) => (
-            <TemplateCard key={template.id} template={template} />
+            <TemplateCard key={template.id} template={template} onUseTemplate={() => handleUseTemplate(template)} />
           ))}
         </div>
 

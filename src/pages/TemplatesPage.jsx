@@ -5,6 +5,7 @@ import { Star, SlidersHorizontal, X } from 'lucide-react'
 import Badge from '../components/ui/Badge'
 import { useAuth } from '../context/AuthContext'
 import { useAuthModal } from '../context/AuthModalContext'
+import { getTemplatePrice } from '../data/templatePricing'
 
 const allTemplates = [
   {
@@ -248,8 +249,8 @@ function TemplateCard({ template, onUseTemplate }) {
           >
             {template.style}
           </span>
-          <Badge variant={template.price === 'Free' ? 'sage' : 'gold'} className="text-[8px] px-2 py-0.5">
-            {template.price}
+          <Badge variant={getTemplatePrice(template.id) === 0 ? 'sage' : 'gold'} className="text-[8px] px-2 py-0.5">
+            {getTemplatePrice(template.id) === 0 ? 'Free' : `₹${getTemplatePrice(template.id).toLocaleString('en-IN')}`}
           </Badge>
         </div>
 
@@ -311,12 +312,14 @@ export default function TemplatesPage() {
   const { openAuthModal } = useAuthModal()
   const navigate = useNavigate()
 
-  function handleUseTemplate(e) {
+  function handleUseTemplate(template) {
     if (!user) {
-      e.preventDefault()
-      openAuthModal({ mode: 'login', redirectAfter: '/create' })
+      openAuthModal({
+        mode: 'login',
+        redirectAfter: { path: '/create', state: { preselectedTemplateId: template.id } },
+      })
     } else {
-      navigate('/create')
+      navigate('/create', { state: { preselectedTemplateId: template.id } })
     }
   }
 
@@ -329,8 +332,16 @@ export default function TemplatesPage() {
   const filtered = allTemplates
     .filter((t) => {
       const matchStyle = selectedStyles.length === 0 || selectedStyles.includes(t.style)
-      const matchPrice = selectedPrice === 'All' || t.price === selectedPrice
+      const price = getTemplatePrice(t.id)
+      const matchPrice =
+        selectedPrice === 'All' ||
+        (selectedPrice === 'Free' && price === 0) ||
+        (selectedPrice === 'Paid' && price > 0)
       return matchStyle && matchPrice
+    })
+    .sort((a, b) => {
+      if (sortBy === 'Price: Low to High') return getTemplatePrice(a.id) - getTemplatePrice(b.id)
+      return 0 // Popular / Newest keep original order
     })
     .slice(0, displayCount)
 
@@ -362,7 +373,7 @@ export default function TemplatesPage() {
             <div>
               <h3 className="text-[10px] uppercase tracking-widest font-semibold text-espresso/35 mb-4">Price</h3>
               <div className="flex flex-col gap-2.5">
-                {['All', 'Free', 'Premium'].map((price) => (
+                {['All', 'Free', 'Paid'].map((price) => (
                   <label key={price} className="flex items-center gap-3 cursor-pointer group">
                     <div
                       onClick={() => setSelectedPrice(price)}
@@ -412,7 +423,7 @@ export default function TemplatesPage() {
                 <TemplateCard
                   key={template.id}
                   template={template}
-                  onUseTemplate={handleUseTemplate}
+                  onUseTemplate={() => handleUseTemplate(template)}
                 />
               ))}
             </div>
@@ -480,7 +491,7 @@ export default function TemplatesPage() {
                 <div>
                   <h4 className="text-[10px] uppercase tracking-widest font-semibold text-espresso/35 mb-4">Price</h4>
                   <div className="flex gap-2">
-                    {['All', 'Free', 'Premium'].map((price) => (
+                    {['All', 'Free', 'Paid'].map((price) => (
                       <button
                         key={price}
                         onClick={() => setSelectedPrice(price)}
