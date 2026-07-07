@@ -3,8 +3,9 @@ import {
   PhoneAuthProvider,
   RecaptchaVerifier,
   signInWithCredential,
+  signInWithPopup,
 } from 'firebase/auth'
-import { firebaseAuth } from '../utils/firebase'
+import { firebaseAuth, googleProvider } from '../utils/firebase'
 import { api } from '../utils/api'
 
 const AuthContext = createContext(null)
@@ -47,6 +48,9 @@ export function AuthProvider({ children }) {
       'auth/network-request-failed':     'Network error. Please check your connection and try again.',
       'auth/captcha-check-failed':       'Security check failed. Please refresh the page and try again.',
       'auth/missing-verification-code':  'Please enter the OTP sent to your phone.',
+      'auth/popup-closed-by-user':        'Sign-in was cancelled. Please try again.',
+      'auth/popup-blocked':               'Pop-up was blocked. Please allow pop-ups for this site.',
+      'auth/cancelled-popup-request':     '',
     }
     if (firebaseMap[code]) return firebaseMap[code]
 
@@ -79,29 +83,24 @@ export function AuthProvider({ children }) {
 
   // ─── Firebase reCAPTCHA / OTP helpers ───────────────────────────────────────
 
-  function getOrCreateRecaptcha() {
-    if (window._recaptchaVerifier) return window._recaptchaVerifier
-    window._recaptchaVerifier = new RecaptchaVerifier(
-      firebaseAuth,
-      'recaptcha-container',
-      { size: 'invisible' }
-    )
-    return window._recaptchaVerifier
-  }
-
   function clearRecaptcha() {
     if (window._recaptchaVerifier) {
       try { window._recaptchaVerifier.clear() } catch {}
       window._recaptchaVerifier = null
     }
-    // Reset the container so Firebase can render a fresh reCAPTCHA next time
     const container = document.getElementById('recaptcha-container')
     if (container) container.innerHTML = ''
   }
 
   async function sendFirebaseOtp(phone) {
+    // Always destroy and recreate — never reuse a previous verifier
     clearRecaptcha()
-    const recaptcha = getOrCreateRecaptcha()
+    const recaptcha = new RecaptchaVerifier(
+      firebaseAuth,
+      'recaptcha-container',
+      { size: 'invisible' }
+    )
+    window._recaptchaVerifier = recaptcha
     const provider = new PhoneAuthProvider(firebaseAuth)
     const verificationId = await provider.verifyPhoneNumber(normalisePhone(phone), recaptcha)
     setVerificationId(verificationId)
@@ -251,6 +250,30 @@ export function AuthProvider({ children }) {
     }
   }
 
+  // ─── GOOGLE SIGN-IN ─────────────────────────────────────────────────────────
+
+  async function signInWithGoogle() {
+    setLoading(true)
+    setError(null)
+    try {
+      const result = await signInWithPopup(firebaseAuth, googleProvider)
+      const idToken = await result.user.getIdToken()
+      const data = await api.post('/auth/google', { idToken })
+      const googleUser = data.data.user
+      localStorage.setItem('antara_user', JSON.stringify(googleUser))
+      setUser(googleUser)
+      return { success: true, isNewUser: data.data.isNewUser }
+    } catch (err) {
+      if (err?.code === 'auth/popup-closed-by-user' || err?.code === 'auth/cancelled-popup-request') {
+        return { success: false }
+      }
+      setError(friendlyError(err))
+      return { success: false }
+    } finally {
+      setLoading(false)
+    }
+  }
+
   // ─── LOGOUT ─────────────────────────────────────────────────────────────────
 
   async function logout() {
@@ -269,6 +292,7 @@ export function AuthProvider({ children }) {
       user,
       loading,
       error,
+      signInWithGoogle,
       requestLoginOtp,
       verifyLoginOtp,
       requestRegisterOtp,
