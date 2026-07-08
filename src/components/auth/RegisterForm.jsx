@@ -138,14 +138,23 @@ export default function RegisterForm({ onSuccess }) {
     setFieldErrors({})
   }
 
-  // Step indicator dots
+  // Step indicator with labels
+  const stepLabels = ['Phone & Password', 'Verify OTP', 'Your Name']
   const stepDots = (
-    <div className="flex items-center justify-center gap-1.5 mb-1">
+    <div className="flex items-center justify-center gap-4 mb-1">
       {[1, 2, 3].map((s) => (
-        <div
-          key={s}
-          className={`rounded-full transition-all duration-300 ${s === step ? 'w-5 h-1.5 bg-gold' : s < step ? 'w-1.5 h-1.5 bg-gold/40' : 'w-1.5 h-1.5 bg-espresso/15'}`}
-        />
+        <div key={s} className="flex flex-col items-center gap-1">
+          <div
+            className={`rounded-full transition-all duration-300 ${
+              s === step ? 'w-6 h-1.5 bg-gold' : s < step ? 'w-1.5 h-1.5 bg-gold/50' : 'w-1.5 h-1.5 bg-espresso/15'
+            }`}
+          />
+          <span className={`text-[9px] font-medium transition-colors duration-300 ${
+            s === step ? 'text-gold' : s < step ? 'text-espresso/40' : 'text-espresso/20'
+          }`}>
+            {stepLabels[s - 1]}
+          </span>
+        </div>
       ))}
     </div>
   )
