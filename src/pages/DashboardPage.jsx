@@ -318,7 +318,7 @@ export default function DashboardPage() {
 
       {/* ── Scrollable content ── */}
       <div className="flex-1 pb-4">
-        <div className="max-w-2xl mx-auto px-4 pt-24 pb-5">
+        <div className="max-w-2xl mx-auto px-4 pt-32 pb-5">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeTab}
