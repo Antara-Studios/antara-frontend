@@ -13,70 +13,24 @@ const navLinks = [
   { label: 'Pricing', to: '/pricing' },
 ]
 
-function UserChip({ user, onLogout }) {
-  const [open, setOpen] = useState(false)
-  const ref = useRef(null)
-
+function UserChip({ user }) {
   const initials = user.fullName
     ? user.fullName.split(' ').map((w) => w[0]).join('').toUpperCase().slice(0, 2)
     : '?'
 
-  // Close dropdown on outside click
-  useEffect(() => {
-    function handleClick(e) {
-      if (ref.current && !ref.current.contains(e.target)) setOpen(false)
-    }
-    document.addEventListener('mousedown', handleClick)
-    return () => document.removeEventListener('mousedown', handleClick)
-  }, [])
-
   return (
-    <div className="relative" ref={ref}>
-      <button
-        onClick={() => setOpen((v) => !v)}
-        aria-label="Account menu"
-        className="flex items-center gap-2 px-3 py-1.5 rounded-full ring-1 ring-espresso/15 hover:ring-gold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
-      >
-        <div className="w-6 h-6 rounded-full bg-gold flex items-center justify-center">
-          <span className="text-[9px] font-bold text-espresso">{initials}</span>
-        </div>
-        <span className="text-xs font-medium text-espresso/80 max-w-[80px] truncate hidden sm:block">
-          {user.fullName}
-        </span>
-      </button>
-
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: -4 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: -4 }}
-            transition={{ duration: 0.2, ease: [0.32, 0.72, 0, 1] }}
-            className="absolute right-0 top-full mt-2 w-48 bg-cream rounded-2xl ring-1 ring-espresso/10 shadow-lg shadow-espresso/10 overflow-hidden z-50"
-          >
-            <div className="px-4 py-3 border-b border-espresso/8">
-              <p className="text-xs font-semibold text-espresso truncate">{user.fullName}</p>
-              <p className="text-[10px] text-espresso/40 truncate mt-0.5">{user.phone}</p>
-            </div>
-            <Link
-              to="/dashboard"
-              onClick={() => setOpen(false)}
-              className="w-full flex items-center gap-2.5 px-4 py-3 text-xs font-medium text-espresso/70 hover:text-espresso hover:bg-warm-100 transition-colors duration-200"
-            >
-              <LayoutGrid className="w-3.5 h-3.5" />
-              My Dashboard
-            </Link>
-            <button
-              onClick={() => { setOpen(false); onLogout() }}
-              className="w-full flex items-center gap-2.5 px-4 py-3 text-xs font-medium text-espresso/70 hover:text-espresso hover:bg-warm-100 transition-colors duration-200"
-            >
-              <LogOut className="w-3.5 h-3.5" />
-              Log out
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+    <Link
+      to="/dashboard"
+      aria-label="Go to dashboard"
+      className="flex items-center gap-2 px-3 py-1.5 rounded-full ring-1 ring-espresso/15 hover:ring-gold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+    >
+      <div className="w-6 h-6 rounded-full bg-gold flex items-center justify-center">
+        <span className="text-[9px] font-bold text-espresso">{initials}</span>
+      </div>
+      <span className="text-xs font-medium text-espresso/80 max-w-[80px] truncate hidden sm:block">
+        {user.fullName}
+      </span>
+    </Link>
   )
 }
 
@@ -167,7 +121,7 @@ export default function Navbar() {
               <Link to="/create">
                 <Button size="sm" variant="primary">Create Invitation</Button>
               </Link>
-              <UserChip user={user} onLogout={logout} />
+              <UserChip user={user} />
             </>
           ) : (
             <>
